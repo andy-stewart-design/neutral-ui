@@ -34,12 +34,15 @@
 	aria-checked={checked}
 	tabindex={checked ? 0 : -1}
 	aria-labelledby={`radiogroup-${ariaID}-option-${index}`}
+	class={`${$$props.class}`}
 >
-	<div id={`radiogroup-${ariaID}-option-${index}`} class={`${$$props.class}`}>
+	<div id={`radiogroup-${ariaID}-option-${index}`} style:width="100%">
 		<slot {checked} />
 	</div>
 </div>
 
+<!-- style:flex-grow={1}
+style:user-select="none" -->
 <style scoped>
 	div {
 		display: inline-block;

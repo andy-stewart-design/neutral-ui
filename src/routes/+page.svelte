@@ -15,22 +15,38 @@
 <div style:margin-bottom="2rem">
 	<h1 style:margin-bottom="1rem">The orientation is {flip}</h1>
 
-	<RadioGroup bind:value={flip}>
-		<RadioGroupLabel>Squiggle Orientation</RadioGroupLabel>
-		{#each options as option, index}
-			<RadioGroupOption value={option.val} {index} let:checked>
-				<p class="radio-group-option" class:checked>{option.text}</p>
-			</RadioGroupOption>
-		{/each}
-	</RadioGroup>
+	<div class="container">
+		<RadioGroup bind:value={flip} class="lorem">
+			<RadioGroupLabel>Squiggle Orientation</RadioGroupLabel>
+			{#each options as option, index}
+				<RadioGroupOption value={option.val} {index} let:checked class="ispum">
+					<p class="radio-group-option" class:checked>{option.text}</p>
+				</RadioGroupOption>
+			{/each}
+		</RadioGroup>
+	</div>
 </div>
 
-<style scoped>
+<style global>
 	* {
 		margin: 0;
 		padding: 0;
 	}
+	.container {
+		display: flex;
+		background: aliceblue;
+	}
+	.lorem {
+		display: flex;
+		flex-grow: 1;
+		background: blue;
+	}
+	.ispum {
+		display: flex;
+		flex-grow: 1;
+	}
 	.radio-group-option {
+		text-align: center;
 		border-width: 1px;
 		border-color: rgb(31 41 55 / 0.1);
 		--tw-bg-opacity: 1;

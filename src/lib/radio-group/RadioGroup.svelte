@@ -1,4 +1,7 @@
 <script lang="ts">
+	// TODO: set initial active option based on the active value
+	// TODO: work out the flex issue
+
 	import { onDestroy, setContext } from 'svelte';
 	import { writable } from 'svelte/store';
 	import type { API, OptionsArray, Value } from './types';
@@ -56,3 +59,7 @@
 <div id={`radiogroup-${ariaID}`} role="radiogroup" class={`${$$props.class}`}>
 	<slot />
 </div>
+
+<!-- style:display="flex"
+	style:flex-grow={1}
+	style:background="blue" -->
