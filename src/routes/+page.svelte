@@ -19,8 +19,8 @@
 		<RadioGroup bind:value={flip} class="lorem">
 			<RadioGroupLabel>Squiggle Orientation</RadioGroupLabel>
 			{#each options as option, index}
-				<RadioGroupOption value={option.val} let:checked class="ispum" {index}>
-					<RadioGroupLabel inner class="radio-group-option" {index}>
+				<RadioGroupOption value={option.val} let:checked class="ispum">
+					<RadioGroupLabel inner class="radio-group-option">
 						<!-- {option.text} -->
 						<span class="inner" class:checked>{option.text}</span>
 					</RadioGroupLabel>
