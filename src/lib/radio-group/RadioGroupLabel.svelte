@@ -10,7 +10,7 @@
 	const { ariaID, registerElement, unregisterElement } = getContext<API>('radioGroupAPI');
 	const uuid = crypto.randomUUID();
 
-	if (inner && index < 0) index = registerElement(type, uuid);
+	if (inner) index = registerElement(type, uuid);
 
 	const mainID = `neutral-radiogroup-${ariaID}-${type}`;
 	const mainFor = `neutral-radiogroup-${ariaID}`;

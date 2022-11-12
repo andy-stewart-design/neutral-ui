@@ -6,8 +6,8 @@
 	const options = [
 		{ val: 'flipped', text: 'Flipped' },
 		{ val: 'foobar', text: 'Foobar' },
-		{ val: 'skejf', text: 'Skejf' },
-		{ val: 'default', text: 'Default' }
+		{ val: 'default', text: 'Default' },
+		{ val: 'skejf', text: 'Skejf' }
 	];
 	let flip = 'default';
 </script>
@@ -19,8 +19,8 @@
 		<RadioGroup bind:value={flip} class="lorem">
 			<RadioGroupLabel>Squiggle Orientation</RadioGroupLabel>
 			{#each options as option, index}
-				<RadioGroupOption value={option.val} let:checked class="ispum">
-					<RadioGroupLabel inner class="radio-group-option">
+				<RadioGroupOption value={option.val} let:checked class="ispum" {index}>
+					<RadioGroupLabel inner class="radio-group-option" {index}>
 						<!-- {option.text} -->
 						<span class="inner" class:checked>{option.text}</span>
 					</RadioGroupLabel>

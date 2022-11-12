@@ -18,7 +18,7 @@
 	const uuid = crypto.randomUUID();
 	let optionRef: HTMLElement;
 
-	if (index < 0) index = registerElement(type, uuid, value);
+	index = registerElement(type, uuid, value);
 
 	const id = `neutral-radiogroup-${ariaID}-${type}-${index}`;
 	const labelledBy = `neutral-radiogroup-${ariaID}-${type}-${index}-label`;
