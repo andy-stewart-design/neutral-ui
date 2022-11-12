@@ -4,7 +4,7 @@
 
 	import { onDestroy, setContext } from 'svelte';
 	import { writable } from 'svelte/store';
-	import type { API, OptionsArray, Value } from './types';
+	import type { API, ElementType, OptionsArray, LabelsArray, Value } from './types';
 
 	export let value: Value;
 	let activeValue = writable(value);
@@ -13,20 +13,45 @@
 
 	let activeIndex = writable(0);
 	let options: OptionsArray[] = [];
-	const ariaID = crypto.randomUUID();
+	let labels: LabelsArray[] = [];
+
+	// TODO: fix this hack
+	const ariaID = crypto.randomUUID().split('-').pop() as string;
+	const id = `neutral-radiogroup-${ariaID}`;
+	const labelledBy = `neutral-radiogroup-${ariaID}-label`;
 
 	function setFocus(): void {
-		options[$activeIndex].node.focus();
+		options[$activeIndex].node?.focus();
 	}
 
-	function registerInput(node: HTMLElement, value: Value, uuid: string): number {
-		options.push({ node, value, uuid });
-		return options.findIndex((obj) => obj.uuid === uuid);
+	function registerElement(type: ElementType, uuid: string, val?: Value): number {
+		if (type === 'option' && val) {
+			options.push({ uuid, val });
+			const i = options.findIndex((obj) => obj.uuid === uuid);
+			if (val === $activeValue) activeIndex.set(i);
+			return i;
+		} else if (type === 'label') {
+			labels.push({ uuid });
+			return labels.findIndex((obj) => obj.uuid === uuid);
+		}
+		return -1;
 	}
 
-	function unregisterInput(uuid: string): void {
-		const i = options.findIndex((obj) => obj.uuid === uuid);
-		options.splice(i, 1);
+	function registerNode(uuid: string, node: HTMLElement) {
+		const index = options.findIndex((obj) => obj.uuid === uuid);
+		let option = options[index];
+		options[index] = { ...option, node };
+		// console.log(option);
+	}
+
+	function unregisterElement(type: ElementType, uuid: string): void {
+		if (type === 'option') {
+			const i = options.findIndex((obj) => obj.uuid === uuid);
+			options.splice(i, 1);
+		} else if (type === 'label') {
+			const i = labels.findIndex((obj) => obj.uuid === uuid);
+			labels.splice(i, 1);
+		}
 	}
 
 	function handleClick(e: KeyboardEvent): void {
@@ -40,7 +65,8 @@
 			if ($activeIndex <= 0) $activeIndex = maxIndex;
 			else $activeIndex--;
 		}
-		$activeValue = options[$activeIndex].value;
+		$activeValue = options[$activeIndex].val;
+		console.log(options[$activeIndex]);
 		setFocus();
 	}
 
@@ -48,18 +74,18 @@
 		ariaID,
 		activeIndex,
 		activeValue,
-		registerInput,
-		unregisterInput,
+		registerElement,
+		registerNode,
+		unregisterElement,
 		handleClick
 	});
 
-	onDestroy(() => (options = []));
+	onDestroy(() => {
+		options = [];
+		labels = [];
+	});
 </script>
 
-<div id={`radiogroup-${ariaID}`} role="radiogroup" class={`${$$props.class}`}>
+<div {id} role="radiogroup" class={`${$$props.class}`} aria-labelledby={labelledBy}>
 	<slot />
 </div>
-
-<!-- style:display="flex"
-	style:flex-grow={1}
-	style:background="blue" -->

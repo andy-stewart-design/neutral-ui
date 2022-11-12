@@ -4,10 +4,10 @@
 	import RadioGroupLabel from '$lib/radio-group/RadioGroupLabel.svelte';
 
 	const options = [
-		{ val: 'default', text: 'Add' },
-		{ val: 'flipped', text: 'Sub' },
-		{ val: 'foobar', text: 'Foo' },
-		{ val: 'skejfnkvw', text: 'Aoj' }
+		{ val: 'flipped', text: 'Flipped' },
+		{ val: 'foobar', text: 'Foobar' },
+		{ val: 'skejf', text: 'Skejf' },
+		{ val: 'default', text: 'Default' }
 	];
 	let flip = 'default';
 </script>
@@ -19,8 +19,11 @@
 		<RadioGroup bind:value={flip} class="lorem">
 			<RadioGroupLabel>Squiggle Orientation</RadioGroupLabel>
 			{#each options as option, index}
-				<RadioGroupOption value={option.val} {index} let:checked class="ispum">
-					<p class="radio-group-option" class:checked>{option.text}</p>
+				<RadioGroupOption value={option.val} let:checked class="ispum">
+					<RadioGroupLabel inner class="radio-group-option">
+						<!-- {option.text} -->
+						<span class="inner" class:checked>{option.text}</span>
+					</RadioGroupLabel>
 				</RadioGroupOption>
 			{/each}
 		</RadioGroup>
@@ -46,6 +49,7 @@
 		flex-grow: 1;
 	}
 	.radio-group-option {
+		display: grid;
 		text-align: center;
 		border-width: 1px;
 		border-color: rgb(31 41 55 / 0.1);
@@ -54,7 +58,8 @@
 		transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
 		transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 		transition-duration: 150ms;
-		padding: 1rem 1.5rem;
+		/* padding: 1rem 1.5rem; */
+		width: 100%;
 	}
 
 	@media (prefers-color-scheme: dark) {
@@ -64,6 +69,10 @@
 			--tw-bg-opacity: 1;
 			background-color: rgb(55 65 81 / var(--tw-bg-opacity));
 		}
+	}
+
+	.inner {
+		padding: 1rem 1.5rem;
 	}
 
 	.checked {

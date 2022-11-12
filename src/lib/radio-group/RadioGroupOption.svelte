@@ -1,16 +1,29 @@
 <script lang="ts">
 	import { getContext, onMount } from 'svelte';
-	import type { API, Value } from './types';
+	import type { API, ElementType, Value } from './types';
+
+	const {
+		ariaID,
+		activeIndex,
+		activeValue,
+		registerElement,
+		registerNode,
+		unregisterElement,
+		handleClick
+	} = getContext<API>('radioGroupAPI');
 
 	export let value: Value;
-	export let index: number = -5;
+	export let index: number = -1;
+	const type: ElementType = 'option';
+	const uuid = crypto.randomUUID();
 	let optionRef: HTMLElement;
 
-	const uuid = crypto.randomUUID();
-	const api = getContext<API>('radioGroupAPI');
-	const { ariaID, activeIndex, activeValue, registerInput, unregisterInput, handleClick } = api;
+	if (index < 0) index = registerElement(type, uuid, value);
 
-	$: checked = $activeIndex === index;
+	const id = `neutral-radiogroup-${ariaID}-${type}-${index}`;
+	const labelledBy = `neutral-radiogroup-${ariaID}-${type}-${index}-label`;
+
+	$: checked = $activeValue === value;
 
 	function setActive(i: number, v: Value) {
 		$activeIndex = i;
@@ -18,10 +31,9 @@
 	}
 
 	onMount(() => {
-		if (index < 0) index = registerInput(optionRef, value, uuid);
-		else registerInput(optionRef, value, uuid);
+		registerNode(uuid, optionRef);
 
-		return () => unregisterInput(uuid);
+		return () => unregisterElement(type, uuid);
 	});
 </script>
 
@@ -29,20 +41,16 @@
 	bind:this={optionRef}
 	on:click={() => setActive(index, value)}
 	on:keydown={handleClick}
-	id={`radiogroup-${ariaID}-option-${index}`}
+	{id}
 	role="radio"
 	aria-checked={checked}
 	tabindex={checked ? 0 : -1}
-	aria-labelledby={`radiogroup-${ariaID}-option-${index}`}
+	aria-labelledby={labelledBy}
 	class={`${$$props.class}`}
 >
-	<div id={`radiogroup-${ariaID}-option-${index}`} style:width="100%">
-		<slot {checked} />
-	</div>
+	<slot {checked} />
 </div>
 
-<!-- style:flex-grow={1}
-style:user-select="none" -->
 <style scoped>
 	div {
 		display: inline-block;
