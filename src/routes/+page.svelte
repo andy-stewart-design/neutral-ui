@@ -1,15 +1,20 @@
 <script lang="ts">
+	import '../app.css';
 	import RadioGroup from '$lib/radio-group/RadioGroup.svelte';
 	import RadioGroupOption from '$lib/radio-group/RadioGroupOption.svelte';
 	import RadioGroupLabel from '$lib/radio-group/RadioGroupLabel.svelte';
+	import Switch from '$lib/switch/Switch.svelte';
+	import SwitchLabel from '$lib/switch/SwitchLabel.svelte';
 
+	let flip = 'default';
 	const options = [
 		{ val: 'flipped', text: 'Flipped' },
 		{ val: 'foobar', text: 'Foobar' },
 		{ val: 'default', text: 'Default' },
 		{ val: 'skejf', text: 'Skejf' }
 	];
-	let flip = 'default';
+
+	let isActive = true;
 </script>
 
 <div style:margin-bottom="2rem">
@@ -27,6 +32,22 @@
 				</RadioGroupOption>
 			{/each}
 		</RadioGroup>
+	</div>
+
+	<div class="p-8">
+		<div class="flex items-center gap-2">
+			<Switch
+				bind:value={isActive}
+				class="relative flex shrink-0 bg-blue-200 cursor-pointer p-0.5 pr-[1.625rem] rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-opacity-75"
+			>
+				<div
+					class="w-6 h-6 bg-blue-600 rounded-full transition-transform"
+					class:translate-x-full={isActive}
+					aria-hidden="true"
+				/>
+				<SwitchLabel slot="label"><span>{isActive}</span></SwitchLabel>
+			</Switch>
+		</div>
 	</div>
 </div>
 

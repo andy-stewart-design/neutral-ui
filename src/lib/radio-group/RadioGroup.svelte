@@ -1,7 +1,4 @@
 <script lang="ts">
-	// TODO: set initial active option based on the active value
-	// TODO: work out the flex issue
-
 	import { onDestroy, setContext } from 'svelte';
 	import { writable } from 'svelte/store';
 	import type { API, ElementType, OptionsArray, LabelsArray, Value } from './types';
@@ -41,7 +38,6 @@
 		const index = options.findIndex((obj) => obj.uuid === uuid);
 		let option = options[index];
 		options[index] = { ...option, node };
-		// console.log(option);
 	}
 
 	function unregisterElement(type: ElementType, uuid: string): void {
@@ -66,7 +62,6 @@
 			else $activeIndex--;
 		}
 		$activeValue = options[$activeIndex].val;
-		console.log(options[$activeIndex]);
 		setFocus();
 	}
 

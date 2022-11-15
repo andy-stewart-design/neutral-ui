@@ -34,7 +34,9 @@
 	onMount(() => {
 		registerNode(uuid, optionRef);
 
-		return () => unregisterElement(type, uuid);
+		return () => {
+			unregisterElement(type, uuid);
+		};
 	});
 </script>
 
