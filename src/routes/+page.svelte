@@ -34,7 +34,7 @@
 	};
 </script>
 
-<div style:margin-bottom="2rem">
+<div class="bg-blue-800" style:margin-bottom="2rem">
 	<h1 style:margin-bottom="1rem">The orientation is {flip}</h1>
 
 	<div class="container">
@@ -51,7 +51,12 @@
 	</div>
 
 	<div class="flex flex-col gap-2 p-8">
-		<NumberInput value="10" min="-10" max="20" class="border border-black/10 py-2 px-3 grow-0">
+		<NumberInput
+			value="10"
+			min="-10"
+			max="20"
+			class="border border-black/10 py-2 px-3 grow-0 bg-blue-500"
+		>
 			<NumberLabel class="text-sm" slot="label">This is a label</NumberLabel>
 			<div class="absolute top-0 right-1 flex items-center h-full">
 				<NumberDecrement class="py-0.5 pt-px px-3 select-none border-r border-black/10">
