@@ -4,16 +4,16 @@
 
 	export let value: boolean;
 	const ariaID = crypto.randomUUID().split('-').pop()!;
-	const id = `neutral-switch-${ariaID}`;
+	const id = `nui-switch-${ariaID}`;
 
 	function updateValue() {
 		value = !value;
+		console.log('working');
 	}
 
 	function handleKeydown(e: KeyboardEvent): void {
 		if (e.key === ' ' || e.key === 'Enter') {
 			e.preventDefault();
-			console.log('working');
 		}
 		updateValue();
 	}

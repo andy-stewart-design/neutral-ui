@@ -108,7 +108,6 @@
 	input::-webkit-inner-spin-button {
 		-webkit-appearance: none;
 		margin: 0;
-		flex-grow: 1;
 	}
 	input[type='number'] {
 		-moz-appearance: textfield;
