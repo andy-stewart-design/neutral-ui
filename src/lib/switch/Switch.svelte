@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { setContext } from 'svelte';
+	import type { SwitchAPI } from './types';
 
 	export let value: boolean;
-	const ariaID = crypto.randomUUID().split('-').pop() as string;
+	const ariaID = crypto.randomUUID().split('-').pop()!;
 	const id = `neutral-switch-${ariaID}`;
 
 	function updateValue() {
@@ -17,9 +18,10 @@
 		updateValue();
 	}
 
-	setContext('switchGroupAPI', { ariaID, updateValue, handleKeydown });
+	setContext<SwitchAPI>('switchGroupAPI', { ariaID, updateValue, handleKeydown });
 </script>
 
+<slot name="start" />
 <button
 	on:click={updateValue}
 	{id}
@@ -31,4 +33,4 @@
 >
 	<slot />
 </button>
-<slot name="label" />
+<slot name="end" />

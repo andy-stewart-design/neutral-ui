@@ -5,9 +5,18 @@
 	import RadioGroupLabel from '$lib/radio-group/RadioGroupLabel.svelte';
 	import Switch from '$lib/switch/Switch.svelte';
 	import SwitchLabel from '$lib/switch/SwitchLabel.svelte';
+	import RangeSlider from '$lib/range-slider/RangeSlider.svelte';
+	import RangeSliderGroup from '$lib/range-slider/RangeSliderGroup.svelte';
+	import RangeSliderTrack from '$lib/range-slider/RangeSliderTrack.svelte';
+	import NumberInput from '$lib/number-input/NumberInput.svelte';
+	import NumberIncrement from '$lib/number-input/NumberIncrement.svelte';
+	import NumberDecrement from '$lib/number-input/NumberDecrement.svelte';
+	import NumberLabel from '$lib/number-input/NumberLabel.svelte';
+	import NumberDescription from '$lib/number-input/NumberDescription.svelte';
+	import NumberError from '$lib/number-input/NumberError.svelte';
 
 	let flip = 'default';
-	const options = [
+	let options = [
 		{ val: 'flipped', text: 'Flipped' },
 		{ val: 'foobar', text: 'Foobar' },
 		{ val: 'default', text: 'Default' },
@@ -15,6 +24,14 @@
 	];
 
 	let isActive = true;
+
+	let slider = {
+		val: 50,
+		min: 0,
+		max: 100,
+		step: 1,
+		name: 'test slider'
+	};
 </script>
 
 <div style:margin-bottom="2rem">
@@ -23,15 +40,30 @@
 	<div class="container">
 		<RadioGroup bind:value={flip} class="lorem">
 			<RadioGroupLabel>Squiggle Orientation</RadioGroupLabel>
-			{#each options as option, index}
+			{#each options as option}
 				<RadioGroupOption value={option.val} let:checked class="ispum">
 					<RadioGroupLabel inner class="radio-group-option">
-						<!-- {option.text} -->
 						<span class="inner" class:checked>{option.text}</span>
 					</RadioGroupLabel>
 				</RadioGroupOption>
 			{/each}
 		</RadioGroup>
+	</div>
+
+	<div class="flex flex-col gap-2 p-8">
+		<NumberInput value="10" min="-10" max="20" class="border border-black/10 py-2 px-3 grow-0">
+			<NumberLabel class="text-sm" slot="label">This is a label</NumberLabel>
+			<div class="absolute top-0 right-1 flex items-center h-full">
+				<NumberDecrement class="py-0.5 pt-px px-3 select-none border-r border-black/10">
+					-
+				</NumberDecrement>
+				<NumberIncrement class="py-0.5 pt-px px-3 select-none">+</NumberIncrement>
+			</div>
+			<NumberDescription slot="description" class="text-xs">
+				Select a number between -10 and 20
+			</NumberDescription>
+			<NumberError slot="error" class="text-xs text-red-500">You goofed!</NumberError>
+		</NumberInput>
 	</div>
 
 	<div class="p-8">
@@ -45,10 +77,30 @@
 					class:translate-x-full={isActive}
 					aria-hidden="true"
 				/>
-				<SwitchLabel slot="label"><span>{isActive}</span></SwitchLabel>
+				<SwitchLabel slot="end"><span>{isActive}</span></SwitchLabel>
 			</Switch>
 		</div>
 	</div>
+
+	<RangeSliderGroup class="p-8">
+		{slider.val}
+		<RangeSlider
+			bind:value={slider.val}
+			min={slider.min}
+			max={slider.max}
+			step={slider.step}
+			name={slider.name}
+			class="relative block w-full"
+			let:normalizedVal
+		>
+			<div class="absolute top-0 left-0 h-full w-full bg-gray-200 border-gray-800/5 rounded-full">
+				<RangeSliderTrack
+					clipVal={normalizedVal}
+					class="absolute top-0 left-0 h-full w-full bg-gradient-to-r from-cyan-400 dark:from-blue-400 to-cyan-500 dark:to-blue-700 origin-left rounded-full"
+				/>
+			</div>
+		</RangeSlider>
+	</RangeSliderGroup>
 </div>
 
 <style global>

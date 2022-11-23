@@ -12,8 +12,7 @@
 	let options: OptionsArray[] = [];
 	let labels: LabelsArray[] = [];
 
-	// TODO: fix this hack
-	const ariaID = crypto.randomUUID().split('-').pop() as string;
+	const ariaID = crypto.randomUUID().split('-').pop()!;
 	const id = `neutral-radiogroup-${ariaID}`;
 	const labelledBy = `neutral-radiogroup-${ariaID}-label`;
 
