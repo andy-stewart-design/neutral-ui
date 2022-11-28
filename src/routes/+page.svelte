@@ -6,7 +6,7 @@
 	import Switch from '$lib/switch/Switch.svelte';
 	import SwitchLabel from '$lib/switch/SwitchLabel.svelte';
 	import RangeSlider from '$lib/range-slider/RangeSlider.svelte';
-	import RangeSliderGroup from '$lib/range-slider/RangeSliderGroup.svelte';
+	// import RangeSliderGroup from '$lib/range-slider/RangeSliderGroup.svelte';
 	import RangeSliderTrack from '$lib/range-slider/RangeSliderTrack.svelte';
 	import NumberInput from '$lib/number-input/NumberInput.svelte';
 	import NumberIncrement from '$lib/number-input/NumberIncrement.svelte';
@@ -14,6 +14,9 @@
 	import NumberLabel from '$lib/number-input/NumberLabel.svelte';
 	import NumberDescription from '$lib/number-input/NumberDescription.svelte';
 	import NumberError from '$lib/number-input/NumberError.svelte';
+	import RangeSliderThumb from '$lib/range-slider/RangeSliderThumb.svelte';
+	import RangeSliderProgress from '$lib/range-slider/RangeSliderProgress.svelte';
+	import RangeSliderLabel from '$lib/range-slider/RangeSliderLabel.svelte';
 
 	let flip = 'default';
 	let options = [
@@ -26,10 +29,11 @@
 	let isActive = true;
 
 	let slider = {
-		val: 50,
+		val: 15,
 		min: 0,
-		max: 100,
-		step: 1,
+		max: 40,
+		step: 0.1,
+		bigStep: 1,
 		name: 'test slider'
 	};
 </script>
@@ -82,25 +86,33 @@
 		</div>
 	</div>
 
-	<RangeSliderGroup class="p-8">
-		{slider.val}
+	<!-- <RangeSliderGroup class="p-8">
+		{slider.val} -->
+	<div class="p-8">
 		<RangeSlider
 			bind:value={slider.val}
 			min={slider.min}
 			max={slider.max}
 			step={slider.step}
+			bigStep={slider.bigStep}
 			name={slider.name}
-			class="relative block w-full"
-			let:normalizedVal
+			class="relative flex flex-col gap-4 w-full max-w-[400px] py-2"
 		>
-			<div class="absolute top-0 left-0 h-full w-full bg-gray-200 border-gray-800/5 rounded-full">
-				<RangeSliderTrack
-					clipVal={normalizedVal}
-					class="absolute top-0 left-0 h-full w-full bg-gradient-to-r from-cyan-400 dark:from-blue-400 to-cyan-500 dark:to-blue-700 origin-left rounded-full"
-				/>
+			<div class="flex justify-between text-sm tabular-nums">
+				<RangeSliderLabel>This is a label</RangeSliderLabel>
+				<p>{slider.val.toFixed(1)}</p>
 			</div>
+			<RangeSliderTrack class="h-1.5 bg-gray-200 border-gray-800/5 rounded-full">
+				<RangeSliderProgress
+					class="bg-gradient-to-r h-1.5 from-purple-300 to-purple-600 rounded-full"
+				/>
+				<RangeSliderThumb
+					class="bg-purple-600 w-5 h-5 border border-white rounded-full cursor-pointer"
+				/>
+			</RangeSliderTrack>
 		</RangeSlider>
-	</RangeSliderGroup>
+	</div>
+	<!-- </RangeSliderGroup> -->
 </div>
 
 <style global>

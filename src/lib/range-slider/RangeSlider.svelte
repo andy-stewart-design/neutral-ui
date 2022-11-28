@@ -1,83 +1,109 @@
 <script lang="ts">
-	// TODO: Refactor to get rid of RangeSliderGroup
-
-	import { getContext } from 'svelte';
+	import { setContext } from 'svelte';
+	import { writable } from 'svelte/store';
+	import { map, clamp } from '$lib/utils/math';
+	import { getElementWidth } from '$lib/utils/getElementWidth';
 	import type { RangeAPI } from './types';
 
+	let rangeContainer: HTMLElement;
 	export let value: number;
 	export let min: number;
 	export let max: number;
 	export let step: number;
-	export let name: string;
+	export let bigStep: number;
+	export let disabled = false;
+	// export let name: string;
 
-	const { ariaID } = getContext<RangeAPI>('rangeSliderAPI');
+	const defaultValue = value;
+	let posX = writable(map(value, min, max, 0, 100));
 
-	const id = `neutral-rangeslider-${ariaID}`;
+	const ariaID = crypto.randomUUID().split('-').pop()!;
+	const id = `nui-rangeslider-${ariaID}`;
 
-	// const defaultValue = value;
-
-	function map(n: number, start1: number, end1: number, start2: number, end2: number): number {
-		return ((n - start1) / (end1 - start1)) * (end2 - start2) + start2;
+	function resetValue() {
+		if (disabled) return;
+		value = defaultValue;
+		posX.set(map(value, min, max, 0, 100));
 	}
 
-	$: normalizedVal = map(value, min, max, 0, 100);
+	function handleKeydown(event: KeyboardEvent) {
+		if (disabled) return;
+		if (
+			(event.shiftKey && event.key === 'ArrowRight') ||
+			(event.shiftKey && event.key === 'ArrowUp') ||
+			event.key === 'PageUp'
+		) {
+			if (value <= max - bigStep) value += bigStep;
+			else if (value > max - bigStep && value < max) value = max;
+		} else if (
+			(event.shiftKey && event.key === 'ArrowLeft') ||
+			(event.shiftKey && event.key === 'ArrowDown') ||
+			event.key === 'PageDown'
+		) {
+			if (value >= min + bigStep) value -= bigStep;
+			else if (value < min + bigStep && value > min) value = min;
+		} else if (event.key === 'ArrowRight' || event.key === 'ArrowUp') {
+			if (value <= max - step) value += step;
+			else if (value > max - step && value < max) value = max;
+		} else if (event.key === 'ArrowLeft' || event.key === 'ArrowDown') {
+			if (value >= min + step) value -= step;
+			else if (value < min + step && value > min) value = min;
+		} else if (event.key === 'End' && value < max) value = max;
+		else if (event.key === 'Home' && value > min) value = min;
+		posX.set(map(value, min, max, 0, 100));
+	}
+
+	function handleMousemove(event: MouseEvent) {
+		if (disabled) return;
+		const { left, width } = getElementWidth(rangeContainer);
+		const mouseX = event.clientX;
+		const nextValue = min + Math.round(((max - min) * ((mouseX - left) / width)) / step) * step;
+		value = clamp(nextValue, min, max);
+		posX.set(map(value, min, max, 0, 100));
+	}
+
+	function handleMousedown(event: MouseEvent) {
+		if (disabled) return;
+		handleMousemove(event);
+		window.addEventListener('mousemove', handleMousemove);
+		window.addEventListener('mouseup', handleMouseup);
+	}
+
+	function handleMouseup(event: MouseEvent) {
+		if (disabled) return;
+		handleMousemove(event);
+		window.removeEventListener('mousemove', handleMousemove);
+		window.removeEventListener('mouseup', handleMouseup);
+	}
+
+	function focusThumb() {
+		const thumb: HTMLElement | null = document.querySelector(`#${id}-thumb`);
+		console.log(thumb);
+
+		thumb?.focus();
+	}
+
+	setContext<RangeAPI>('rangeSliderAPI', {
+		parentID: id,
+		value,
+		min,
+		max,
+		posX,
+		handleKeydown,
+		handleMousedown,
+		focusThumb,
+		disabled
+	});
 </script>
 
-<!-- <RangeSliderGroup>
-   <RangeSliderLabel />
-   <RangeSlider>
-      <RangeSliderTrack />
-   </RangeSlider>
-</RangeSliderGroup> -->
-
-<!-- RangeSliderGroup  -->
-<!-- <div> -->
-<!-- RangeSliderLabel  -->
-<!-- <label for={id}><slot /></label> -->
-
-<!-- <div> -->
-<!-- <div class="absolute top-0 left-0 h-2 w-full overflow-hidden rounded-full">
-       <div
-         class="absolute top-0 left-0 h-full w-full bg-gray-200 dark:bg-gray-700 border border-gray-800/5 dark:border-gray-100/10 rounded-full"
-       />
-       <div
-         class="absolute top-0 left-0 h-full w-full bg-gradient-to-r from-cyan-400 dark:from-blue-400 to-cyan-500 dark:to-blue-700 origin-left rounded-full"
-         style={`clip-path: polygon(0 0, ${normalizedVal}% 0, ${normalizedVal}% 100%, 0 100%);`}
-       />
-     </div> -->
-
-<!-- RangeSlider  -->
-{#if $$slots.default}
-	<div class={`${$$props.class}`}>
-		<slot {normalizedVal} {id} />
-		<input
-			type="range"
-			bind:value
-			{id}
-			{name}
-			{min}
-			{max}
-			{step}
-			aria-label={name}
-			class="range-reset"
-		/>
-	</div>
-{:else}
-	<input
-		type="range"
-		bind:value
-		{id}
-		{name}
-		{min}
-		{max}
-		{step}
-		aria-label={name}
-		class={`${$$props.class}`}
-	/>
-{/if}
-
-<style scoped>
-	.range-reset {
-		@apply relative block w-full h-2 bg-transparent rounded-lg appearance-none cursor-pointer;
-	}
-</style>
+<div
+	bind:this={rangeContainer}
+	{id}
+	{disabled}
+	class={`${$$props.class}`}
+	style:position="relative"
+	role="presentation"
+	tabindex="-1"
+>
+	<slot {resetValue} />
+</div>
