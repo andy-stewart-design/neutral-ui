@@ -96,10 +96,12 @@
 			step={slider.step}
 			bigStep={slider.bigStep}
 			class="relative flex flex-col gap-4 w-full max-w-[400px] py-2"
+			let:progress
 		>
 			<div class="flex justify-between text-sm tabular-nums">
 				<RangeSliderLabel>This is a label</RangeSliderLabel>
 				<p>{slider.val.toFixed(1)}</p>
+				<p>{progress.toFixed(1)}</p>
 			</div>
 			<RangeSliderTrack class="h-1.5 bg-gray-200 border-gray-800/5 rounded-full">
 				<RangeSliderProgress

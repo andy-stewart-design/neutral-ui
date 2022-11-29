@@ -103,5 +103,5 @@
 	role="presentation"
 	tabindex="-1"
 >
-	<slot {resetValue} />
+	<slot {resetValue} progress={$posX} />
 </div>
