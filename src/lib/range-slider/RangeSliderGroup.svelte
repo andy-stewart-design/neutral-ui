@@ -1,4 +1,4 @@
-<script lang="ts">
+<!-- <script lang="ts">
 	import { setContext } from 'svelte';
 	import type { RangeAPI } from './types';
 
@@ -10,4 +10,4 @@
 
 <div {id} class={`${$$props.class}`}>
 	<slot {id} />
-</div>
+</div> -->

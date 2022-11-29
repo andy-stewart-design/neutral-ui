@@ -8,6 +8,7 @@ export interface RangeAPI {
 	posX: Writable<number>;
 	handleKeydown: (e: KeyboardEvent) => void;
 	handleMousedown: (event: MouseEvent) => void;
+	handleMousemove: (event: MouseEvent) => void;
 	focusThumb: () => void;
 	disabled: boolean;
 }

@@ -8,7 +8,6 @@
 
 	function updateValue() {
 		value = !value;
-		console.log('working');
 	}
 
 	function handleKeydown(e: KeyboardEvent): void {

@@ -12,7 +12,6 @@
 	export let step: number;
 	export let bigStep: number;
 	export let disabled = false;
-	// export let name: string;
 
 	const defaultValue = value;
 	let posX = writable(map(value, min, max, 0, 100));
@@ -78,8 +77,6 @@
 
 	function focusThumb() {
 		const thumb: HTMLElement | null = document.querySelector(`#${id}-thumb`);
-		console.log(thumb);
-
 		thumb?.focus();
 	}
 
@@ -91,6 +88,7 @@
 		posX,
 		handleKeydown,
 		handleMousedown,
+		handleMousemove,
 		focusThumb,
 		disabled
 	});

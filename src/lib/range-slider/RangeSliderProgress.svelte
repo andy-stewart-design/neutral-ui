@@ -14,5 +14,7 @@
 	style:translate="0% -50%"
 	style:width={`${$posX}%`}
 	style:transform-origin="left"
+	style:pointer-events="none"
+	aria-hidden="true"
 />
 <!-- style={`clip-path: polygon(0 0, ${$normalValue}% 0, ${$normalValue}% 100%, 0 100%);`} -->

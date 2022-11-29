@@ -95,7 +95,6 @@
 			max={slider.max}
 			step={slider.step}
 			bigStep={slider.bigStep}
-			name={slider.name}
 			class="relative flex flex-col gap-4 w-full max-w-[400px] py-2"
 		>
 			<div class="flex justify-between text-sm tabular-nums">
