@@ -15,7 +15,7 @@
 	style:translate="-50% -50%"
 	style:left={`${$posX}%`}
 	on:mousedown|preventDefault={handleMousedown}
-	on:touchstart={() => alert('No touching!')}
+	on:touchstart={(e) => alert(e.touches[0].clientX)}
 	on:keydown={handleKeydown}
 	role="slider"
 	tabindex="0"
