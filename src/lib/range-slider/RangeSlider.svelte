@@ -55,7 +55,9 @@
 	function handleMousemove(event: MouseEvent) {
 		if (disabled) return;
 		const { left, width } = getElementWidth(rangeContainer);
-		const mouseX = event.clientX;
+		// const mouseX = event.clientX;
+		// @ts-expect-error
+		const mouseX = event.touches ? event.touches[0].clientX : event.clientX;
 		const nextValue = min + Math.round(((max - min) * ((mouseX - left) / width)) / step) * step;
 		value = clamp(nextValue, min, max);
 		posX.set(map(value, min, max, 0, 100));
