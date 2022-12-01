@@ -15,6 +15,7 @@
 	style:translate="-50% -50%"
 	style:left={`${$posX}%`}
 	on:mousedown|preventDefault={handleMousedown}
+	on:touchstart={() => alert('No touching!')}
 	on:keydown={handleKeydown}
 	role="slider"
 	tabindex="0"
