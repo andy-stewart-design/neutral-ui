@@ -42,7 +42,7 @@
 
 <div
 	bind:this={optionRef}
-	on:click={() => setActive(index, value)}
+	on:click|preventDefault={() => setActive(index, value)}
 	on:keydown={handleClick}
 	{id}
 	role="radio"

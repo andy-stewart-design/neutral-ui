@@ -22,7 +22,7 @@
 
 <slot name="start" />
 <button
-	on:click={updateValue}
+	on:click|preventDefault={updateValue}
 	{id}
 	role="switch"
 	class={`${$$props.class}`}
