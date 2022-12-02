@@ -52,14 +52,37 @@
 		posX.set(map(value, min, max, 0, 100));
 	}
 
+	function calculateValue(n: number) {
+		const { left, width } = getElementWidth(rangeContainer);
+		const nextValue = min + Math.round(((max - min) * ((n - left) / width)) / step) * step;
+		return clamp(nextValue, min, max);
+	}
+
+	function handleTouchmove(event: TouchEvent) {
+		if (disabled) return;
+		const mouseX = event.touches[0].clientX;
+		value = calculateValue(mouseX);
+		posX.set(map(value, min, max, 0, 100));
+	}
+
+	function handleTouchstart(event: TouchEvent) {
+		if (disabled) return;
+		handleTouchmove(event);
+		window.removeEventListener('touchmove', handleTouchmove);
+		window.removeEventListener('touchend', handleTouchend);
+	}
+
+	function handleTouchend(event: TouchEvent) {
+		if (disabled) return;
+		handleTouchmove(event);
+		window.addEventListener('touchmove', handleTouchmove);
+		window.addEventListener('touchend', handleTouchend);
+	}
+
 	function handleMousemove(event: MouseEvent) {
 		if (disabled) return;
-		const { left, width } = getElementWidth(rangeContainer);
-		// const mouseX = event.clientX;
-		// @ts-expect-error
-		const mouseX = event.touches ? event.touches[0].clientX : event.clientX;
-		const nextValue = min + Math.round(((max - min) * ((mouseX - left) / width)) / step) * step;
-		value = clamp(nextValue, min, max);
+		const mouseX = event.clientX;
+		value = calculateValue(mouseX);
 		posX.set(map(value, min, max, 0, 100));
 	}
 
@@ -90,7 +113,7 @@
 		posX,
 		handleKeydown,
 		handleMousedown,
-		handleMousemove,
+		handleTouchstart,
 		focusThumb,
 		disabled
 	});

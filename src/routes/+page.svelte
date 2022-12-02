@@ -9,7 +9,7 @@
 	// import RangeSliderGroup from '$lib/range-slider/RangeSliderGroup.svelte';
 	import RangeSliderTrack from '$lib/range-slider/RangeSliderTrack.svelte';
 	import NumberInput from '$lib/number-input/NumberInput.svelte';
-	import NumberIncrement from '$lib/number-input/NumberIncrement.svelte';
+	import { NumberIncrement } from '../lib/index';
 	import NumberDecrement from '$lib/number-input/NumberDecrement.svelte';
 	import NumberLabel from '$lib/number-input/NumberLabel.svelte';
 	import NumberDescription from '$lib/number-input/NumberDescription.svelte';

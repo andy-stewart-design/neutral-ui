@@ -2,8 +2,17 @@
 	import { getContext } from 'svelte';
 	import type { RangeAPI } from './types';
 
-	const { parentID, value, min, max, posX, handleKeydown, handleMousedown, disabled } =
-		getContext<RangeAPI>('rangeSliderAPI');
+	const {
+		parentID,
+		value,
+		min,
+		max,
+		posX,
+		handleKeydown,
+		handleMousedown,
+		handleTouchstart,
+		disabled
+	} = getContext<RangeAPI>('rangeSliderAPI');
 	const role = 'thumb';
 	const id = `${parentID}-${role}`;
 </script>
@@ -15,7 +24,7 @@
 	style:translate="-50% -50%"
 	style:left={`${$posX}%`}
 	on:mousedown|preventDefault={handleMousedown}
-	on:touchstart={(e) => alert(e.touches[0].clientX)}
+	on:touchstart={handleTouchstart}
 	on:keydown={handleKeydown}
 	role="slider"
 	tabindex="0"
