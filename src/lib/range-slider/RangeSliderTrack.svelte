@@ -2,16 +2,24 @@
 	import { getContext } from 'svelte';
 	import type { RangeAPI } from './types';
 
-	const { parentID, handleMousemove } = getContext<RangeAPI>('rangeSliderAPI');
+	export let padding = '0.75rem';
+
+	const { parentID, handleMousedown, handleTouchstart, handleKeydown } =
+		getContext<RangeAPI>('rangeSliderAPI');
 	const role = 'track';
 	const id = `${parentID}-${role}`;
 </script>
 
-<div style:position="relative">
+<div
+	style:position="relative"
+	style:padding={`${padding} 0`}
+	on:mousedown|preventDefault={handleMousedown}
+	on:touchstart|preventDefault={handleTouchstart}
+	on:keydown={handleKeydown}
+>
 	<div
 		{id}
 		class={`${$$props.class}`}
-		on:mousedown={handleMousemove}
 		style:position="absolute"
 		style:translate="0% -50%"
 		style:width="100%"

@@ -97,19 +97,18 @@
 			bigStep={slider.bigStep}
 			class="relative flex flex-col gap-4 w-full max-w-[400px] py-2"
 			let:progress
+			let:dragging
 		>
 			<div class="flex justify-between text-sm tabular-nums">
 				<RangeSliderLabel>This is a label</RangeSliderLabel>
 				<p>{slider.val.toFixed(1)}</p>
-				<p>{progress.toFixed(1)}</p>
+				<p>{dragging} {progress.toFixed(1)}</p>
 			</div>
 			<RangeSliderTrack class="h-1.5 bg-gray-200 border-gray-800/5 rounded-full">
 				<RangeSliderProgress
 					class="bg-gradient-to-r h-1.5 from-purple-300 to-purple-600 rounded-full"
 				/>
-				<RangeSliderThumb
-					class="bg-purple-600 w-5 h-5 border border-white rounded-full cursor-pointer"
-				/>
+				<RangeSliderThumb class={dragging ? 'thumb active' : 'thumb'} />
 			</RangeSliderTrack>
 		</RangeSlider>
 	</div>
@@ -117,6 +116,12 @@
 </div>
 
 <style global>
+	.thumb {
+		@apply bg-purple-600 w-6 h-6 border border-white rounded-full cursor-pointer;
+	}
+	.thumb.active {
+		@apply bg-green-500;
+	}
 	* {
 		margin: 0;
 		padding: 0;

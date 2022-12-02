@@ -15,6 +15,7 @@
 
 	const defaultValue = value;
 	let posX = writable(map(value, min, max, 0, 100));
+	let dragging = false;
 
 	const ariaID = crypto.randomUUID().split('-').pop()!;
 	const id = `nui-rangeslider-${ariaID}`;
@@ -60,6 +61,7 @@
 
 	function handleTouchmove(event: TouchEvent) {
 		if (disabled) return;
+		dragging = true;
 		const mouseX = event.touches[0].clientX;
 		value = calculateValue(mouseX);
 		posX.set(map(value, min, max, 0, 100));
@@ -68,15 +70,15 @@
 	function handleTouchstart(event: TouchEvent) {
 		if (disabled) return;
 		handleTouchmove(event);
-		window.removeEventListener('touchmove', handleTouchmove);
-		window.removeEventListener('touchend', handleTouchend);
+		window.addEventListener('touchmove', handleTouchmove);
+		window.addEventListener('touchend', handleTouchend);
 	}
 
 	function handleTouchend(event: TouchEvent) {
 		if (disabled) return;
-		handleTouchmove(event);
-		window.addEventListener('touchmove', handleTouchmove);
-		window.addEventListener('touchend', handleTouchend);
+		dragging = false;
+		window.removeEventListener('touchmove', handleTouchmove);
+		window.removeEventListener('touchend', handleTouchend);
 	}
 
 	function handleMousemove(event: MouseEvent) {
@@ -113,6 +115,7 @@
 		posX,
 		handleKeydown,
 		handleMousedown,
+		handleMousemove,
 		handleTouchstart,
 		focusThumb,
 		disabled
@@ -128,5 +131,5 @@
 	role="presentation"
 	tabindex="-1"
 >
-	<slot {resetValue} progress={$posX} />
+	<slot {resetValue} progress={$posX} {dragging} />
 </div>
