@@ -29,6 +29,7 @@
 	type="button"
 	tabindex="0"
 	aria-checked={value}
+	aria-labelledby={`${id}-label`}
 >
 	<slot />
 </button>
