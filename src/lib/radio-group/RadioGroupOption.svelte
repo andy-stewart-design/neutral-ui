@@ -56,13 +56,8 @@
 	aria-checked={checked}
 	tabindex={checked ? 0 : -1}
 	class={`${$$props.class}`}
+	style:display="inline-block"
+	style:cursor="pointer"
 >
 	<slot {checked} />
 </div>
-
-<style scoped>
-	div {
-		display: inline-block;
-		cursor: pointer;
-	}
-</style>
