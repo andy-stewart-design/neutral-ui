@@ -7,7 +7,7 @@
 	// TODO figure out how to set up docs site
 
 	import '../app.css';
-	import '../lib/neutral.css';
+	import '../lib/base.css';
 	import RadioGroup from '$lib/radio-group/RadioGroup.svelte';
 	import RadioGroupOption from '$lib/radio-group/RadioGroupOption.svelte';
 	import RadioGroupLabel from '$lib/radio-group/RadioGroupLabel.svelte';

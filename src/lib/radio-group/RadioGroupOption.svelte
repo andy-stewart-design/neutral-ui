@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { setAria } from '$lib/actions/setAria';
 	import { getContext, onMount } from 'svelte';
 	import type { API, ElementType, Value } from './types';
 
@@ -22,13 +23,6 @@
 	else registerElement(type, uuid, value);
 
 	const id = `${groupID}-${type}-${index}`;
-	const labelID = `${id}-label`;
-
-	function getLabel(node: HTMLElement, { id }: { id: string }) {
-		const label = `#${id}`;
-		const labelEl = document.querySelector(label);
-		if (labelEl) node.setAttribute('aria-labelledby', label);
-	}
 
 	$: checked = $activeValue === value;
 
@@ -50,7 +44,7 @@
 	bind:this={optionRef}
 	on:click|preventDefault={() => setActive(index, value)}
 	on:keydown={handleClick}
-	use:getLabel={{ id: labelID }}
+	use:setAria={{ id }}
 	{id}
 	role="radio"
 	aria-checked={checked}
