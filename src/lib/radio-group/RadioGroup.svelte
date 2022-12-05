@@ -65,7 +65,7 @@
 	}
 
 	setContext<API>('radioGroupAPI', {
-		ariaID,
+		groupID: id,
 		activeIndex,
 		activeValue,
 		registerElement,

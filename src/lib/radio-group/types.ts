@@ -14,7 +14,7 @@ export interface LabelsArray {
 }
 
 export interface API {
-	ariaID: string;
+	groupID: string;
 	activeIndex: Writable<number>;
 	activeValue: Writable<string | number>;
 	registerElement: (type: ElementType, uuid: string, value?: Value) => number;

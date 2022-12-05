@@ -3,7 +3,7 @@
 	import type { API, ElementType, Value } from './types';
 
 	const {
-		ariaID,
+		groupID,
 		activeIndex,
 		activeValue,
 		registerElement,
@@ -21,8 +21,14 @@
 	if (index < 0) index = registerElement(type, uuid, value);
 	else registerElement(type, uuid, value);
 
-	const id = `neutral-radiogroup-${ariaID}-${type}-${index}`;
-	const labelledBy = `neutral-radiogroup-${ariaID}-${type}-${index}-label`;
+	const id = `${groupID}-${type}-${index}`;
+	const labelID = `${id}-label`;
+
+	function getLabel(node: HTMLElement, { id }: { id: string }) {
+		const label = `#${id}`;
+		const labelEl = document.querySelector(label);
+		if (labelEl) node.setAttribute('aria-labelledby', label);
+	}
 
 	$: checked = $activeValue === value;
 
@@ -44,11 +50,11 @@
 	bind:this={optionRef}
 	on:click|preventDefault={() => setActive(index, value)}
 	on:keydown={handleClick}
+	use:getLabel={{ id: labelID }}
 	{id}
 	role="radio"
 	aria-checked={checked}
 	tabindex={checked ? 0 : -1}
-	aria-labelledby={labelledBy}
 	class={`${$$props.class}`}
 >
 	<slot {checked} />

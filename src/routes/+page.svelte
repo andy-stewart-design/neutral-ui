@@ -1,4 +1,11 @@
 <script lang="ts">
+	// TODO switch from $$props.class to {export className as class}
+	// TODO button component
+	// TODO refactor radio label to accept either icon or text and handle accesibility issues
+	// TODO Look for ways to optimize component structure
+	// TODO combobox component
+	// TODO figure out how to set up docs site
+
 	import '../app.css';
 	import RadioGroup from '$lib/radio-group/RadioGroup.svelte';
 	import RadioGroupOption from '$lib/radio-group/RadioGroupOption.svelte';
@@ -6,7 +13,6 @@
 	import Switch from '$lib/switch/Switch.svelte';
 	import SwitchLabel from '$lib/switch/SwitchLabel.svelte';
 	import RangeSlider from '$lib/range-slider/RangeSlider.svelte';
-	// import RangeSliderGroup from '$lib/range-slider/RangeSliderGroup.svelte';
 	import RangeSliderTrack from '$lib/range-slider/RangeSliderTrack.svelte';
 	import NumberInput from '$lib/number-input/NumberInput.svelte';
 	import { NumberIncrement } from '../lib/index';
@@ -46,9 +52,7 @@
 			<RadioGroupLabel>Squiggle Orientation</RadioGroupLabel>
 			{#each options as option}
 				<RadioGroupOption value={option.val} let:checked class="ispum">
-					<RadioGroupLabel inner class="radio-group-option">
-						<span class="inner" class:checked>{option.text}</span>
-					</RadioGroupLabel>
+					<span class="radio-group-option inner" class:checked>{option.text}</span>
 				</RadioGroupOption>
 			{/each}
 		</RadioGroup>

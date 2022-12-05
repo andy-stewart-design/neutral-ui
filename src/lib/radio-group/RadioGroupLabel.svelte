@@ -7,7 +7,7 @@
 	export let index = -1;
 	let type: ElementType = 'label';
 
-	const { ariaID, registerElement, unregisterElement } = getContext<API>('radioGroupAPI');
+	const { groupID, registerElement, unregisterElement } = getContext<API>('radioGroupAPI');
 	const uuid = crypto.randomUUID();
 
 	if (inner) {
@@ -15,34 +15,19 @@
 		else registerElement(type, uuid);
 	}
 
-	const mainID = `neutral-radiogroup-${ariaID}-${type}`;
-	const mainFor = `neutral-radiogroup-${ariaID}`;
-	const innerID = `neutral-radiogroup-${ariaID}-option-${index}-${type}`;
-	const innerFor = `neutral-radiogroup-${ariaID}-option-${index}`;
+	const outerID = `${groupID}-${type}`;
+	const optionID = `${groupID}-option-${index}`;
+	const innerID = `${optionID}-${type}`;
 
 	onDestroy(() => unregisterElement(type, uuid));
 </script>
 
 {#if inner}
-	<p id={innerID} for={innerFor} class={`${$$props.class}`} role="none">
+	<div id={innerID} class={`${$$props.class} sr-only`} aria-hidden="true">
 		<slot />
-	</p>
+	</div>
 {:else}
-	<label id={mainID} for={mainFor} class={`${$$props.class}`} class:sr-only={!visible} role="none">
+	<label id={outerID} for={groupID} class={`${$$props.class}`} class:sr-only={!visible}>
 		<slot />
 	</label>
 {/if}
-
-<style scoped>
-	.sr-only {
-		position: absolute;
-		width: 1px;
-		height: 1px;
-		margin: -1px;
-		padding: 0;
-		overflow: hidden;
-		clip: rect(0, 0, 0, 0);
-		white-space: nowrap;
-		border-width: 0;
-	}
-</style>
