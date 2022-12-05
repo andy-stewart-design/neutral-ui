@@ -9,3 +9,15 @@
 	white-space: nowrap;
 	border-width: 0;
 }
+input.nui-input::-webkit-outer-spin-button,
+input.nui-input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+input.nui-input[type='number'] {
+	-moz-appearance: textfield;
+	flex-grow: 1;
+}
+input.nui-input {
+	background: transparent;
+}

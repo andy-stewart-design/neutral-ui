@@ -78,7 +78,7 @@
 <div style:position="relative" style:display="flex">
 	<slot name="start" />
 	<input
-		class={`${$$props.class}`}
+		class={`nui-input ${$$props.class}`}
 		bind:value
 		{...attributes}
 		on:keydown={handleKeyDown}
@@ -101,19 +101,3 @@
 {:else}
 	<slot name="error" />
 {/if}
-
-<!-- aria-invalid="false" -->
-<style global>
-	input::-webkit-outer-spin-button,
-	input::-webkit-inner-spin-button {
-		-webkit-appearance: none;
-		margin: 0;
-	}
-	input[type='number'] {
-		-moz-appearance: textfield;
-		flex-grow: 1;
-	}
-	input {
-		background: transparent;
-	}
-</style>
