@@ -15,8 +15,8 @@
 <div
 	style:position="relative"
 	style:padding={`${padding} 0`}
-	on:mousedown|preventDefault={handleMousedown}
-	on:touchstart|preventDefault={handleTouchstart}
+	on:mousedown={handleMousedown}
+	on:touchstart={handleTouchstart}
 	on:keydown={handleKeydown}
 >
 	<div

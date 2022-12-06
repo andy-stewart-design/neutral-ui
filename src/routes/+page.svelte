@@ -1,16 +1,14 @@
 <script lang="ts">
-	// TODO switch from $$props.class to {export className as class}
 	// TODO button component
-	// TODO refactor radio label to accept either icon or text and handle accesibility issues
 	// TODO Look for ways to optimize component structure
-	// TODO combobox component
+	// util for generating IDs?
+	// TODO Radio Description
+	// TODO popover component
 	// TODO figure out how to set up docs site
 
 	import '../app.css';
 	import '../lib/base.css';
 	import RadioGroup from '$lib/radio-group/RadioGroup.svelte';
-	import RadioGroupOption from '$lib/radio-group/RadioGroupOption.svelte';
-	import RadioGroupLabel from '$lib/radio-group/RadioGroupLabel.svelte';
 	import Switch from '$lib/switch/Switch.svelte';
 	import SwitchLabel from '$lib/switch/SwitchLabel.svelte';
 	import RangeSlider from '$lib/range-slider/RangeSlider.svelte';
@@ -24,6 +22,9 @@
 	import RangeSliderThumb from '$lib/range-slider/RangeSliderThumb.svelte';
 	import RangeSliderProgress from '$lib/range-slider/RangeSliderProgress.svelte';
 	import RangeSliderLabel from '$lib/range-slider/RangeSliderLabel.svelte';
+	import Button from '$lib/button/Button.svelte';
+	import RadioLabel from '$lib/radio-group/RadioLabel.svelte';
+	import RadioOption from '$lib/radio-group/RadioOption.svelte';
 
 	let flip = 'default';
 	let options = [
@@ -52,18 +53,24 @@
 
 	<div class="flex flex-col gap-2 p-8">
 		<RadioGroup bind:value={flip} class="flex flex-col gap-3 grow">
-			<RadioGroupLabel visible>Squiggle Orientation</RadioGroupLabel>
+			<RadioLabel visible>Squiggle Orientation</RadioLabel>
 			<div class="flex">
 				{#each options as option}
-					<RadioGroupOption value={option.val} let:checked class="grow">
+					<RadioOption value={option.val} let:checked class="grow">
 						<span
 							class="radio-option block text-center text-white border border-gray-100/10 bg-gray-800 transition-colors ease-out py-4 px-6"
 							class:checked>{option.text}</span
 						>
-					</RadioGroupOption>
+					</RadioOption>
 				{/each}
 			</div>
 		</RadioGroup>
+	</div>
+
+	<div class="flex gap-2 p-8">
+		<Button class="text-white bg-black py-3 px-4" on:click={() => alert('hello')}
+			>Test Button</Button
+		>
 	</div>
 
 	<div class="flex flex-col gap-2 p-8">

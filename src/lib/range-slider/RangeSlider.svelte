@@ -62,6 +62,7 @@
 	}
 
 	function handleTouchmove(event: TouchEvent) {
+		event.preventDefault();
 		if (disabled) return;
 		dragging = true;
 		const mouseX = event.touches[0].clientX;
@@ -84,6 +85,7 @@
 	}
 
 	function handleMousemove(event: MouseEvent) {
+		event.preventDefault();
 		if (disabled) return;
 		const mouseX = event.clientX;
 		value = calculateValue(mouseX);
