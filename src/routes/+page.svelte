@@ -68,9 +68,10 @@
 	</div>
 
 	<div class="flex gap-2 p-8">
-		<Button class="text-white bg-black py-3 px-4" on:click={() => alert('hello')}
-			>Test Button</Button
-		>
+		<Button class="flex gap-2 text-white bg-black py-3 px-4" on:click={() => alert('hello')}>
+			<svelte:fragment slot="start">+</svelte:fragment>
+			Test Button
+		</Button>
 	</div>
 
 	<div class="flex flex-col gap-2 p-8">
