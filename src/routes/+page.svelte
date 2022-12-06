@@ -46,16 +46,23 @@
 </script>
 
 <div style:margin-bottom="2rem">
-	<h1 style:margin-bottom="1rem">The orientation is {flip}</h1>
+	<div class="p-8 pb-0">
+		<h1 style:margin-bottom="1rem">The orientation is {flip}</h1>
+	</div>
 
-	<div class="container">
-		<RadioGroup bind:value={flip} class="lorem">
-			<RadioGroupLabel>Squiggle Orientation</RadioGroupLabel>
-			{#each options as option}
-				<RadioGroupOption value={option.val} let:checked class="ispum">
-					<span class="radio-group-option inner" class:checked>{option.text}</span>
-				</RadioGroupOption>
-			{/each}
+	<div class="flex flex-col gap-2 p-8">
+		<RadioGroup bind:value={flip} class="flex flex-col gap-3 grow">
+			<RadioGroupLabel visible>Squiggle Orientation</RadioGroupLabel>
+			<div class="flex">
+				{#each options as option}
+					<RadioGroupOption value={option.val} let:checked class="grow">
+						<span
+							class="radio-option block text-center text-white border border-gray-100/10 bg-gray-800 transition-colors ease-out py-4 px-6"
+							class:checked>{option.text}</span
+						>
+					</RadioGroupOption>
+				{/each}
+			</div>
 		</RadioGroup>
 	</div>
 
@@ -127,59 +134,7 @@
 	.thumb.active {
 		@apply bg-green-500;
 	}
-	* {
-		margin: 0;
-		padding: 0;
-	}
-	.container {
-		display: flex;
-		background: aliceblue;
-	}
-	.lorem {
-		display: flex;
-		flex-grow: 1;
-		background: blue;
-	}
-	.ispum {
-		display: flex;
-		flex-grow: 1;
-	}
-	.radio-group-option {
-		display: grid;
-		text-align: center;
-		border-width: 1px;
-		border-color: rgb(31 41 55 / 0.1);
-		--tw-bg-opacity: 1;
-		background-color: rgb(229 231 235 / var(--tw-bg-opacity));
-		transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
-		transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-		transition-duration: 150ms;
-		/* padding: 1rem 1.5rem; */
-		width: 100%;
-	}
-
-	@media (prefers-color-scheme: dark) {
-		.radio-group-option {
-			color: white;
-			border-color: rgb(243 244 246 / 0.1);
-			--tw-bg-opacity: 1;
-			background-color: rgb(55 65 81 / var(--tw-bg-opacity));
-		}
-	}
-
-	.inner {
-		padding: 1rem 1.5rem;
-	}
-
-	.checked {
-		--tw-bg-opacity: 1;
-		background-color: rgb(34 211 238 / var(--tw-bg-opacity));
-	}
-
-	@media (prefers-color-scheme: dark) {
-		.checked {
-			--tw-bg-opacity: 1;
-			background-color: rgb(37 99 235 / var(--tw-bg-opacity));
-		}
+	.radio-option.checked {
+		@apply bg-purple-600;
 	}
 </style>

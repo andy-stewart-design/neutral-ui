@@ -9,6 +9,8 @@
 	export let step = 1;
 	export let bigStep = 10;
 	export let placeholder = '00';
+	export { className as class };
+	let className = '';
 
 	const role = 'spinbutton';
 	const ariaID = crypto.randomUUID().split('-').pop()!;
@@ -78,7 +80,7 @@
 <div style:position="relative" style:display="flex">
 	<slot name="start" />
 	<input
-		class={`nui-input ${$$props.class}`}
+		class={`nui-input ${className}`}
 		bind:value
 		{...attributes}
 		on:keydown={handleKeyDown}

@@ -1,5 +1,5 @@
 export interface SwitchAPI {
-	ariaID: string;
+	groupID: string;
 	updateValue: () => void;
 	handleKeydown: (e: KeyboardEvent) => void;
 }

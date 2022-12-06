@@ -3,6 +3,9 @@
 	import type { SwitchAPI } from './types';
 
 	export let value: boolean;
+	export { className as class };
+
+	let className = '';
 	const ariaID = crypto.randomUUID().split('-').pop()!;
 	const id = `nui-switch-${ariaID}`;
 
@@ -17,7 +20,7 @@
 		updateValue();
 	}
 
-	setContext<SwitchAPI>('switchGroupAPI', { ariaID, updateValue, handleKeydown });
+	setContext<SwitchAPI>('switchGroupAPI', { groupID: id, updateValue, handleKeydown });
 </script>
 
 <slot name="start" />
@@ -25,7 +28,7 @@
 	on:click|preventDefault={updateValue}
 	{id}
 	role="switch"
-	class={`${$$props.class}`}
+	class={className}
 	type="button"
 	tabindex="0"
 	aria-checked={value}

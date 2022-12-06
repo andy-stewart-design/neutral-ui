@@ -2,6 +2,9 @@
 	import { getContext } from 'svelte';
 	import type { RangeAPI } from './types';
 
+	export { className as class };
+	let className = '';
+
 	const { parentID, posX } = getContext<RangeAPI>('rangeSliderAPI');
 	const role = 'progress';
 	const id = `${parentID}-${role}`;
@@ -9,7 +12,7 @@
 
 <div
 	{id}
-	class={`${$$props.class}`}
+	class={className}
 	style:position="absolute"
 	style:translate="0% -50%"
 	style:width={`${$posX}%`}

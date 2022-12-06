@@ -2,6 +2,9 @@
 	import { getContext } from 'svelte';
 	import type { RangeAPI } from './types';
 
+	export { className as class };
+	let className = '';
+
 	const {
 		parentID,
 		value,
@@ -19,7 +22,7 @@
 
 <div
 	{id}
-	class={`${$$props.class}`}
+	class={className}
 	style:position="absolute"
 	style:translate="-50% -50%"
 	style:left={`${$posX}%`}

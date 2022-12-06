@@ -6,9 +6,10 @@
 	let className = '';
 
 	const { groupID } = getContext<SwitchAPI>('switchGroupAPI');
-	const id = `${groupID}-label`;
+	const role = 'thumb';
+	const id = `${groupID}-${role}`;
 </script>
 
-<label {id} for={groupID} class={className} tabindex="-1">
+<div {id} class={className} aria-hidden="true">
 	<slot />
-</label>
+</div>

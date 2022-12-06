@@ -21,4 +21,5 @@ export interface API {
 	registerNode: (uuid: string, node: HTMLElement) => void;
 	unregisterElement: (type: ElementType, uuid: string) => void;
 	handleClick: (e: KeyboardEvent) => void;
+	setFocus: () => void;
 }

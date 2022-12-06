@@ -12,6 +12,8 @@
 	export let step: number;
 	export let bigStep: number;
 	export let disabled = false;
+	export { className as class };
+	let className = '';
 
 	const defaultValue = value;
 	let posX = writable(map(value, min, max, 0, 100));
@@ -126,7 +128,7 @@
 	bind:this={rangeContainer}
 	{id}
 	{disabled}
-	class={`${$$props.class}`}
+	class={className}
 	style:position="relative"
 	role="presentation"
 	tabindex="-1"

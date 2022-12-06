@@ -3,6 +3,8 @@
 	import type { RangeAPI } from './types';
 
 	export let padding = '0.75rem';
+	export { className as class };
+	let className = '';
 
 	const { parentID, handleMousedown, handleTouchstart, handleKeydown } =
 		getContext<RangeAPI>('rangeSliderAPI');
@@ -19,7 +21,7 @@
 >
 	<div
 		{id}
-		class={`${$$props.class}`}
+		class={className}
 		style:position="absolute"
 		style:translate="0% -50%"
 		style:width="100%"
