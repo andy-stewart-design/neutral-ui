@@ -135,5 +135,5 @@
 	role="presentation"
 	tabindex="-1"
 >
-	<slot {resetValue} progress={$posX} {dragging} />
+	<slot {resetValue} progress={$posX} {dragging} {disabled} />
 </div>

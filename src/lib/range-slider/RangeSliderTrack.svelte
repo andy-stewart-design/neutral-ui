@@ -15,6 +15,7 @@
 <div
 	style:position="relative"
 	style:padding={`${padding} 0`}
+	style:cursor="pointer"
 	on:mousedown={handleMousedown}
 	on:touchstart={handleTouchstart}
 	on:keydown={handleKeydown}
@@ -25,7 +26,6 @@
 		style:position="absolute"
 		style:translate="0% -50%"
 		style:width="100%"
-		style:cursor="pointer"
 		tabindex="-1"
 		aria-hidden="true"
 	/>

@@ -25,6 +25,7 @@
 	import Button from '$lib/button/Button.svelte';
 	import RadioLabel from '$lib/radio-group/RadioLabel.svelte';
 	import RadioOption from '$lib/radio-group/RadioOption.svelte';
+	import { clsx } from '$lib/utils/clsx';
 
 	let flip = 'default';
 	let options = [
@@ -118,13 +119,16 @@
 			class="relative flex flex-col gap-4 w-full max-w-[400px] py-2"
 			let:progress
 			let:dragging
+			let:disabled
 		>
 			<div class="flex justify-between text-sm tabular-nums">
 				<RangeSliderLabel>This is a label</RangeSliderLabel>
 				<p>{slider.val.toFixed(1)}</p>
 				<p>{dragging} {progress.toFixed(1)}</p>
 			</div>
-			<RangeSliderTrack class="h-1.5 bg-gray-200 border-gray-800/5 rounded-full">
+			<RangeSliderTrack
+				class={clsx('h-1.5 bg-gray-200 border-gray-800/5 rounded-full', disabled && 'bg-blue-500')}
+			>
 				<RangeSliderProgress
 					class="bg-gradient-to-r h-1.5 from-purple-300 to-purple-600 rounded-full"
 				/>
