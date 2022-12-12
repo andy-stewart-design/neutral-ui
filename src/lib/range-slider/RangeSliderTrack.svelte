@@ -6,7 +6,7 @@
 	export { className as class };
 	let className = '';
 
-	const { parentID, handleMousedown, handleTouchstart, handleKeydown } =
+	const { parentID, disabled, handleMousedown, handleTouchstart, handleKeydown } =
 		getContext<RangeAPI>('rangeSliderAPI');
 	const role = 'track';
 	const id = `${parentID}-${role}`;
@@ -15,7 +15,7 @@
 <div
 	style:position="relative"
 	style:padding={`${padding} 0`}
-	style:cursor="pointer"
+	style:cursor={disabled ? 'not-allowed' : 'pointer'}
 	on:mousedown={handleMousedown}
 	on:touchstart={handleTouchstart}
 	on:keydown={handleKeydown}

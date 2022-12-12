@@ -26,6 +26,7 @@
 	style:position="absolute"
 	style:translate="-50% -50%"
 	style:left={`${$posX}%`}
+	style:cursor="inherit"
 	role="slider"
 	tabindex="0"
 	aria-valuemax={value}
