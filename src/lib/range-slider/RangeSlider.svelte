@@ -15,6 +15,10 @@
 	export { className as class };
 	let className = '';
 
+	let isDisabled = writable(disabled);
+	$: isDisabled.set(disabled);
+	$: disabled = $isDisabled;
+
 	const defaultValue = value;
 	let posX = writable(map(value, min, max, 0, 100));
 	let dragging = false;
@@ -122,7 +126,7 @@
 		handleMousemove,
 		handleTouchstart,
 		focusThumb,
-		disabled
+		isDisabled
 	});
 </script>
 

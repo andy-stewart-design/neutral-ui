@@ -11,5 +11,5 @@ export interface RangeAPI {
 	handleMousemove: (event: MouseEvent) => void;
 	handleTouchstart: (event: TouchEvent) => void;
 	focusThumb: () => void;
-	disabled: boolean;
+	isDisabled: Writable<boolean>;
 }
