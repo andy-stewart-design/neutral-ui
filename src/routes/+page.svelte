@@ -8,6 +8,7 @@
 
 	import '../app.css';
 	import '../lib/base.css';
+	import { Radio } from '$lib/radio-group/index';
 	import RadioGroup from '$lib/radio-group/RadioGroup.svelte';
 	import Switch from '$lib/switch/Switch.svelte';
 	import SwitchLabel from '$lib/switch/SwitchLabel.svelte';
@@ -35,6 +36,14 @@
 		{ val: 'skejf', text: 'Skejf' }
 	];
 
+	let count = 1;
+	let countOptions = [
+		{ val: 1, text: 1 },
+		{ val: 2, text: 2 },
+		{ val: 3, text: 3 },
+		{ val: 4, text: 4 }
+	];
+
 	let isActive = true;
 
 	let slider = {
@@ -53,19 +62,37 @@
 	</div>
 
 	<div class="flex flex-col gap-2 p-8">
-		<RadioGroup bind:value={flip} class="flex flex-col gap-3 grow">
-			<RadioLabel visible>Squiggle Orientation</RadioLabel>
+		<Radio.Group bind:value={flip} class="flex flex-col gap-3 grow">
+			<Radio.Label visible>Squiggle Orientation</Radio.Label>
 			<div class="flex">
 				{#each options as option}
-					<RadioOption value={option.val} let:checked class="grow">
+					<Radio.Option value={option.val} let:checked class="grow">
 						<span
 							class="radio-option block text-center text-white border border-gray-100/10 bg-gray-800 transition-colors ease-out py-4 px-6"
 							class:checked>{option.text}</span
 						>
-					</RadioOption>
+					</Radio.Option>
 				{/each}
 			</div>
-		</RadioGroup>
+		</Radio.Group>
+	</div>
+
+	<div>{count}</div>
+
+	<div class="flex flex-col gap-2 p-8">
+		<Radio.Group bind:value={count} class="flex flex-col gap-3 grow">
+			<RadioLabel visible>Squiggle Orientation</RadioLabel>
+			<div class="flex">
+				{#each countOptions as option}
+					<Radio.Option value={option.val} let:checked class="grow">
+						<span
+							class="radio-option block text-center text-white border border-gray-100/10 bg-gray-800 transition-colors ease-out py-4 px-6"
+							class:checked>{option.text}</span
+						>
+					</Radio.Option>
+				{/each}
+			</div>
+		</Radio.Group>
 	</div>
 
 	<div class="flex gap-2 p-8">
