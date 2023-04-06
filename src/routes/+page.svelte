@@ -1,7 +1,6 @@
 <script lang="ts">
 	// TODO button component
 	// TODO Look for ways to optimize component structure
-	// util for generating IDs?
 	// TODO Radio Description
 	// TODO popover component
 	// TODO figure out how to set up docs site
