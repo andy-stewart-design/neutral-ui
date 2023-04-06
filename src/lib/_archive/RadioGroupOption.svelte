@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { setAria } from '$lib/actions/setAria';
 	import { getContext, onMount } from 'svelte';
-	import type { API, ElementType, Value } from './types';
+	import type { API, ElementType, Value } from '../radio-group/types';
 
 	const {
 		groupID,

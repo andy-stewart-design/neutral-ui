@@ -8,7 +8,7 @@
 
 	import '../app.css';
 	import '../lib/base.css';
-	import RadioGroup from '$lib/radio-group/RadioGroup.svelte';
+	import { RadioGroup, RadioLabel, RadioOption, RadioDescription } from '$lib/radio-group';
 	import Switch from '$lib/switch/Switch.svelte';
 	import SwitchLabel from '$lib/switch/SwitchLabel.svelte';
 	import RangeSlider from '$lib/range-slider/RangeSlider.svelte';
@@ -23,9 +23,9 @@
 	import RangeSliderProgress from '$lib/range-slider/RangeSliderProgress.svelte';
 	import RangeSliderLabel from '$lib/range-slider/RangeSliderLabel.svelte';
 	import Button from '$lib/button/Button.svelte';
-	import RadioLabel from '$lib/radio-group/RadioLabel.svelte';
-	import RadioOption from '$lib/radio-group/RadioOption.svelte';
 	import { clsx } from '$lib/utils/clsx';
+	import LabelContext from '$lib/label/LabelContext.svelte';
+	import Label from '$lib/label/Label.svelte';
 
 	let flip = 'default';
 	let options = [
@@ -49,22 +49,36 @@
 
 <div style:margin-bottom="2rem">
 	<div class="p-8 pb-0">
-		<h1 style:margin-bottom="1rem">The orientation is {flip}</h1>
+		<h1 style:margin-bottom="1rem">
+			The orientation is <strong class="font-extrabold">{flip}</strong>
+		</h1>
 	</div>
 
 	<div class="flex flex-col gap-2 p-8">
-		<RadioGroup bind:value={flip} class="flex flex-col gap-3 grow">
-			<RadioLabel visible>Squiggle Orientation</RadioLabel>
-			<div class="flex">
+		<RadioGroup
+			bind:value={flip}
+			on:change={() => console.log('size updated')}
+			class="grid gap-3 w-full"
+		>
+			<RadioLabel class="font-semibold text-sm">Squiggle Orientation</RadioLabel>
+			<div class="flex w-full">
 				{#each options as option}
-					<RadioOption value={option.val} let:checked class="grow">
+					<RadioOption
+						value={option.val}
+						class="group grow focus-visible:outline-blue-500 focus-visible:outline-1"
+					>
+						<!-- <Label>Squiggle Orientation</Label> -->
 						<span
-							class="radio-option block text-center text-white border border-gray-100/10 bg-gray-800 transition-colors ease-out py-4 px-6"
-							class:checked>{option.text}</span
+							class="inline-block font-medium text-center w-full py-2 px-3 border border-gray-900/10 border-r-0 group-last-of-type:border-r group-aria-checked:bg-blue-500 group-aria-checked:text-white"
 						>
+							{option.text}
+						</span>
 					</RadioOption>
 				{/each}
 			</div>
+			<RadioDescription class="text-sm text-black/60"
+				>Select an orientation for your squiggle</RadioDescription
+			>
 		</RadioGroup>
 	</div>
 
@@ -93,7 +107,7 @@
 
 	<div class="p-8">
 		<div class="flex items-center gap-2">
-			<Switch
+			<!-- <Switch
 				bind:value={isActive}
 				class="relative flex shrink-0 bg-blue-200 cursor-pointer p-0.5 pr-[1.625rem] rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-opacity-75"
 			>
@@ -103,7 +117,7 @@
 					aria-hidden="true"
 				/>
 				<SwitchLabel slot="end"><span>{isActive}</span></SwitchLabel>
-			</Switch>
+			</Switch> -->
 		</div>
 	</div>
 
@@ -139,7 +153,7 @@
 	<!-- </RangeSliderGroup> -->
 </div>
 
-<style global>
+<style global lang="postcss">
 	.thumb {
 		@apply bg-purple-600 w-6 h-6 border border-white rounded-full cursor-pointer;
 	}

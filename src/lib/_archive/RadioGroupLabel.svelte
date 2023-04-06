@@ -1,4 +1,4 @@
-<script lang="ts">
+<!-- <script lang="ts">
 	import { getContext, onDestroy } from 'svelte';
 	import type { API, ElementType } from './types';
 
@@ -40,4 +40,4 @@
 	>
 		<slot />
 	</label>
-{/if}
+{/if} -->

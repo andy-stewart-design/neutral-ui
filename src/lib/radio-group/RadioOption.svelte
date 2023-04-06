@@ -1,60 +1,62 @@
 <script lang="ts">
-	import { setAria } from '$lib/actions/setAria';
 	import { getContext, onMount } from 'svelte';
-	import type { API, ElementType, Value } from './types';
+	import { getID, LIB_PREFIX, RADIO_GROUP_CONTEXT } from '$lib/utils/ui';
+	// import DescriptionContext from '../description/DescriptionContext.svelte';
+	import LabelContext from '../label/LabelContext.svelte';
+	import type { RadioGroupAPI } from './types';
 
-	const {
-		groupID,
-		activeIndex,
-		activeValue,
-		registerElement,
-		registerNode,
-		unregisterElement,
-		handleClick
-	} = getContext<API>('radioGroupAPI');
+	const radioGroupAPI = getContext<RadioGroupAPI>(RADIO_GROUP_CONTEXT);
+	const { groupID, activeIndex, activeValue } = radioGroupAPI;
 
-	export let value: Value;
+	$: if (!radioGroupAPI) {
+		throw new Error('<Radio.Option /> elements must be used inside a <Radio.Group />.');
+	}
+
+	export let value: string | number;
 	export let index: number = -1;
 	export { className as class };
-	let className = '';
+	let className: string = '';
 
-	const role: ElementType = 'option';
-	const uuid = crypto.randomUUID();
+	const role = 'option';
 	let optionRef: HTMLElement;
 
-	if (index < 0) index = registerElement(role, uuid, value);
-	else registerElement(role, uuid, value);
+	const uuid = getID();
+	const group = `${role}-${uuid}`;
+	const id = `${LIB_PREFIX}-${groupID}-${group}`;
+	// const id = `${RADIO_GROUP_CONTEXT}-${groupID}-${role}-${uuid}`;
 
-	const id = `${groupID}-${role}-${index}`;
+	if (index < 0) index = radioGroupAPI.registerOption(uuid, value);
+	else radioGroupAPI.registerOption(uuid, value);
 
 	$: checked = $activeValue === value;
 
-	function setActive(i: number, v: Value) {
+	function setActive(i: number, v: string | number) {
 		$activeIndex = i;
 		$activeValue = v;
 	}
 
 	onMount(() => {
-		registerNode(uuid, optionRef);
-
-		return () => {
-			unregisterElement(role, uuid);
-		};
+		radioGroupAPI.registerNode(uuid, optionRef);
+		return () => radioGroupAPI.unregisterOption(uuid);
 	});
 </script>
 
-<div
-	bind:this={optionRef}
-	on:click|preventDefault={() => setActive(index, value)}
-	on:keydown={handleClick}
-	use:setAria={{ id }}
-	{id}
-	role="radio"
-	aria-checked={checked}
-	tabindex={checked ? 0 : -1}
-	class={className}
-	style:display="inline-block"
-	style:cursor="pointer"
->
-	<slot {checked} />
-</div>
+<!-- <DescriptionContext let:describedby> -->
+<LabelContext {group} let:labelledby>
+	<div
+		bind:this={optionRef}
+		on:click|preventDefault={() => setActive(index, value)}
+		on:keydown={radioGroupAPI.handleClick}
+		{id}
+		role="radio"
+		aria-checked={checked}
+		tabindex={checked ? 0 : -1}
+		aria-labelledby={labelledby}
+		class={className}
+		style:cursor="pointer"
+	>
+		<slot {checked} />
+	</div>
+</LabelContext>
+<!-- </DescriptionContext> -->
+<!-- aria-describedby={describedby} -->

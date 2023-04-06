@@ -1,39 +1,38 @@
 <script lang="ts">
-	import { onDestroy, setContext } from 'svelte';
+	import { getID, LIB_PREFIX, RADIO_GROUP_CONTEXT } from '$lib/utils/ui';
+	import { onDestroy, setContext, createEventDispatcher } from 'svelte';
 	import { writable } from 'svelte/store';
-	import { setAria } from '$lib/actions/setAria';
-	import type { API, ElementType, OptionsArray, LabelsArray, Value } from './types';
+	import DescriptionContext from '../description/DescriptionContext.svelte';
+	import LabelContext from '../label/LabelContext.svelte';
+	import type { OptionsArray, RadioGroupAPI } from './types';
 
-	export let value: Value;
+	const dispatch = createEventDispatcher();
+
 	export { className as class };
-	let className = '';
+	let className: string = '';
 
+	export let value: string | number;
 	let activeValue = writable(value);
 	$: activeValue.set(value);
 	$: value = $activeValue;
 
 	let activeIndex = writable(0);
 	let options: OptionsArray[] = [];
-	let labels: LabelsArray[] = [];
 
-	const ariaID = crypto.randomUUID().split('-').pop()!;
-	const id = `nui-radiogroup-${ariaID}`;
+	const role = 'radiogroup';
+	const uuid = getID();
+	const group = `${role}-${uuid}`;
+	const id = `${LIB_PREFIX}-${group}`;
 
 	function setFocus(): void {
 		options[$activeIndex].node?.focus();
 	}
 
-	function registerElement(type: ElementType, uuid: string, val?: Value): number {
-		if (type === 'option' && val) {
-			options.push({ uuid, val });
-			const i = options.findIndex((obj) => obj.uuid === uuid);
-			if (val === $activeValue) activeIndex.set(i);
-			return i;
-		} else if (type === 'label') {
-			labels.push({ uuid });
-			return labels.findIndex((obj) => obj.uuid === uuid);
-		}
-		return -1;
+	function registerOption(uuid: string, val: string | number): number {
+		options.push({ uuid, val });
+		const i = options.findIndex((obj) => obj.uuid === uuid);
+		if (val === $activeValue) activeIndex.set(i);
+		return i;
 	}
 
 	function registerNode(uuid: string, node: HTMLElement) {
@@ -42,14 +41,9 @@
 		options[index] = { ...option, node };
 	}
 
-	function unregisterElement(type: ElementType, uuid: string): void {
-		if (type === 'option') {
-			const i = options.findIndex((obj) => obj.uuid === uuid);
-			options.splice(i, 1);
-		} else if (type === 'label') {
-			const i = labels.findIndex((obj) => obj.uuid === uuid);
-			labels.splice(i, 1);
-		}
+	function unregisterOption(uuid: string): void {
+		const i = options.findIndex((obj) => obj.uuid === uuid);
+		options.splice(i, 1);
 	}
 
 	function handleClick(e: KeyboardEvent): void {
@@ -65,25 +59,35 @@
 		}
 		$activeValue = options[$activeIndex].val;
 		setFocus();
+		dispatch('change');
 	}
 
-	setContext<API>('radioGroupAPI', {
-		groupID: id,
+	const api = {
+		groupID: group,
 		activeIndex,
 		activeValue,
-		registerElement,
+		registerOption,
 		registerNode,
-		unregisterElement,
+		unregisterOption,
 		handleClick,
 		setFocus
-	});
+	};
 
-	onDestroy(() => {
-		options = [];
-		labels = [];
-	});
+	setContext<RadioGroupAPI>(RADIO_GROUP_CONTEXT, api);
+
+	onDestroy(() => (options = []));
 </script>
 
-<div {id} role="radiogroup" class={className} use:setAria={{ id }}>
-	<slot />
-</div>
+<LabelContext {group} let:labelledby>
+	<DescriptionContext {group} let:describedby>
+		<div
+			{id}
+			role="radiogroup"
+			aria-labelledby={labelledby}
+			aria-describedby={describedby}
+			class={className}
+		>
+			<slot />
+		</div>
+	</DescriptionContext>
+</LabelContext>
