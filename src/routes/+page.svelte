@@ -35,6 +35,14 @@
 		{ val: 'skejf', text: 'Skejf' }
 	];
 
+	let count = 1;
+	let countOptions = [
+		{ val: 1, text: 1 },
+		{ val: 2, text: 2 },
+		{ val: 3, text: 3 },
+		{ val: 4, text: 4 }
+	];
+
 	let isActive = true;
 
 	let slider = {
@@ -68,6 +76,7 @@
 						class="group grow focus-visible:outline-blue-500 focus-visible:outline-1"
 					>
 						<!-- <Label>Squiggle Orientation</Label> -->
+
 						<span
 							class="inline-block font-medium text-center w-full py-2 px-3 border border-gray-900/10 border-r-0 group-last-of-type:border-r group-aria-checked:bg-blue-500 group-aria-checked:text-white"
 						>
