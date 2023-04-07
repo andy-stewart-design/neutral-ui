@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { getID, LIB_PREFIX, NUMBER_GROUP_CONTEXT } from '$lib/utils/ui';
-	import { onDestroy, setContext, createEventDispatcher } from 'svelte';
+	import { setContext, createEventDispatcher } from 'svelte';
 	import { writable } from 'svelte/store';
+	import { getID, LIB_PREFIX, NUMBER_GROUP_CONTEXT } from '$lib/utils/ui';
 	import DescriptionContext from '../description/DescriptionContext.svelte';
 	import LabelContext from '../label/LabelContext.svelte';
 	import type { NumberAPI } from './types';
