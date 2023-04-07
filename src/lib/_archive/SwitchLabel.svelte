@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
-	import type { SwitchAPI } from './types';
+	import type { SwitchAPI } from '../switch/types';
 
 	export { className as class };
 	let className = '';

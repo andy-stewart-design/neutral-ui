@@ -5,14 +5,16 @@
 	export { className as class };
 	let className = '';
 
-	const { parentID, register } = getContext<NumberAPI>('NumberAPI');
+	// const { parentID, register } = getContext<NumberAPI>('NumberAPI');
 	const role: SpinbuttonRole = 'error';
-	const id = `${parentID}-${role}`;
-	register(role, id);
+	// const id = `${parentID}-${role}`;
+	// register(role, id);
 
-	const attributes = { id };
+	// const attributes = { id };
 </script>
 
-<div {...attributes} class={className}>
+<div class={className}>
 	<slot />
 </div>
+
+<!-- {...attributes} -->

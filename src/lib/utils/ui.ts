@@ -7,6 +7,7 @@ export const LIB_PREFIX = 'nui';
 export const DESCR_CONTEXT_NAME = `${LIB_PREFIX}-description`;
 export const LABEL_CONTEXT_NAME = `${LIB_PREFIX}-label`;
 export const RADIO_GROUP_CONTEXT = `${LIB_PREFIX}-radiogroup`;
+export const NUMBER_GROUP_CONTEXT = `${LIB_PREFIX}-radiogroup`;
 export const SWITCH_CONTEXT = `${LIB_PREFIX}-switch`;
 
 export const getID = () => {

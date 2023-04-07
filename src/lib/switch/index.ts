@@ -1,3 +1,5 @@
+export { default as SwitchGroup } from './SwitchGroup.svelte';
 export { default as Switch } from './Switch.svelte';
-export { default as SwitchLabel } from './SwitchLabel.svelte';
+export { default as SwitchLabel } from '../label/Label.svelte';
+export { default as SwitchDescription } from '../description/Description.svelte';
 export { default as SwitchThumb } from './SwitchThumb.svelte';

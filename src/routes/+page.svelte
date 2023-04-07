@@ -8,23 +8,22 @@
 	import '../app.css';
 	import '../lib/base.css';
 	import { RadioGroup, RadioLabel, RadioOption, RadioDescription } from '$lib/radio-group';
-	import Switch from '$lib/switch/Switch.svelte';
-	import SwitchLabel from '$lib/switch/SwitchLabel.svelte';
+	import { SwitchGroup, Switch, SwitchLabel, SwitchThumb } from '$lib/switch';
 	import RangeSlider from '$lib/range-slider/RangeSlider.svelte';
 	import RangeSliderTrack from '$lib/range-slider/RangeSliderTrack.svelte';
-	import NumberInput from '$lib/number-input/NumberInput.svelte';
-	import { NumberIncrement } from '../lib/index';
-	import NumberDecrement from '$lib/number-input/NumberDecrement.svelte';
-	import NumberLabel from '$lib/number-input/NumberLabel.svelte';
-	import NumberDescription from '$lib/number-input/NumberDescription.svelte';
 	import NumberError from '$lib/number-input/NumberError.svelte';
 	import RangeSliderThumb from '$lib/range-slider/RangeSliderThumb.svelte';
 	import RangeSliderProgress from '$lib/range-slider/RangeSliderProgress.svelte';
 	import RangeSliderLabel from '$lib/range-slider/RangeSliderLabel.svelte';
 	import Button from '$lib/button/Button.svelte';
 	import { clsx } from '$lib/utils/clsx';
-	import LabelContext from '$lib/label/LabelContext.svelte';
-	import Label from '$lib/label/Label.svelte';
+	import {
+		NumberGroup,
+		NumberLabel,
+		NumberInput,
+		NumberIncrement,
+		NumberDecrement
+	} from '$lib/number-input';
 
 	let flip = 'default';
 	let options = [
@@ -34,7 +33,7 @@
 		{ val: 'skejf', text: 'Skejf' }
 	];
 
-	let count = 1;
+	let count: number;
 	let countOptions = [
 		{ val: 1, text: 1 },
 		{ val: 2, text: 2 },
@@ -98,35 +97,40 @@
 	</div>
 
 	<div class="flex flex-col gap-2 p-8">
-		<NumberInput value="10" min="-10" max="20" class="border border-black/10 py-2 px-3 grow-0">
-			<NumberLabel class="text-sm" slot="label">This is a label</NumberLabel>
-			<div class="absolute top-0 right-1 flex items-center h-full">
-				<NumberDecrement class="py-0.5 pt-px px-3 select-none border-r border-black/10">
-					-
-				</NumberDecrement>
-				<NumberIncrement class="py-0.5 pt-px px-3 select-none">+</NumberIncrement>
+		<div>The current count is: {count}</div>
+		<NumberGroup bind:value={count} max="30" class="grid gap-3 max-w-sm">
+			<NumberLabel hidden>Count</NumberLabel>
+			<div class="relative">
+				<NumberInput class="border border-black/10 w-full py-2 px-2.5" />
+				<div class="absolute top-0 right-0 flex h-full pr-2">
+					<NumberDecrement class="grow flex items-center py-1 px-2">
+						<svg viewBox="0 0 12 12" width="12" height="12">
+							<path d="M1 6 L11 6" stroke="currentColor" stroke-width="1.25" />
+						</svg>
+					</NumberDecrement>
+					<NumberIncrement class="grow flex items-center p-1">
+						<svg viewBox="0 0 12 12" width="12" height="12">
+							<path d="M1 6 L11 6 M6 1 L6 11" stroke="currentColor" stroke-width="1.25" />
+						</svg>
+					</NumberIncrement>
+				</div>
 			</div>
-			<NumberDescription slot="description" class="text-xs">
-				Select a number between -10 and 20
-			</NumberDescription>
-			<NumberError slot="error" class="text-xs text-red-500">You goofed!</NumberError>
-		</NumberInput>
+		</NumberGroup>
 	</div>
 
-	<div class="p-8">
-		<div class="flex items-center gap-2">
-			<!-- <Switch
+	<div class="flex gap-4 p-8">
+		<SwitchGroup class="flex justify-between items-center gap-4">
+			<SwitchLabel class="grow select-none">Active</SwitchLabel>
+			<Switch
 				bind:value={isActive}
-				class="relative flex shrink-0 bg-blue-200 cursor-pointer p-0.5 pr-[1.625rem] rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-opacity-75"
+				class="group relative flex bg-blue-500/10 border border-blue-900/10 w-12 p-0.5 rounded-full transition-colors aria-checked:bg-blue-500 focus:outline-none after:absolute after:-top-1 after:-right-1 after:-bottom-1 after:-left-1 after:border after:border-blue-500 after:rounded-full after:opacity-0 focus-visible:after:opacity-100"
 			>
-				<div
-					class="w-6 h-6 bg-blue-600 rounded-full transition-transform"
-					class:translate-x-full={isActive}
-					aria-hidden="true"
+				<SwitchThumb
+					class="inline-block w-5 h-5 bg-blue-500 rounded-full transition-all group-aria-checked:translate-x-[22px] group-aria-checked:bg-white"
 				/>
-				<SwitchLabel slot="end"><span>{isActive}</span></SwitchLabel>
-			</Switch> -->
-		</div>
+			</Switch>
+		</SwitchGroup>
+		{isActive}
 	</div>
 
 	<!-- <RangeSliderGroup class="p-8">

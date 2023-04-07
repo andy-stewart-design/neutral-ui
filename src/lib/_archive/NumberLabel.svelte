@@ -1,6 +1,6 @@
-<script lang="ts">
+<!-- <script lang="ts">
 	import { getContext } from 'svelte';
-	import type { NumberAPI, SpinbuttonRole } from './types';
+	import type { NumberAPI, SpinbuttonRole } from '../number-input/types';
 
 	export { className as class };
 	let className = '';
@@ -15,4 +15,4 @@
 
 <label {...attributes} class={className}>
 	<slot />
-</label>
+</label> -->

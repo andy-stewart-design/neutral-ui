@@ -1,39 +1,29 @@
 <script lang="ts">
-	import { setContext } from 'svelte';
+	import { getContext } from 'svelte';
+	import { getID, LIB_PREFIX, SWITCH_CONTEXT } from '$lib/utils/ui';
 	import type { SwitchAPI } from './types';
+
+	const switchGroupContext = getContext<SwitchAPI>(SWITCH_CONTEXT);
+	const labelID = switchGroupContext ? `nui-${switchGroupContext.groupID}-label` : '';
 
 	export let value: boolean;
 	export { className as class };
-
 	let className = '';
-	const ariaID = crypto.randomUUID().split('-').pop()!;
-	const id = `nui-switch-${ariaID}`;
 
-	function updateValue() {
-		value = !value;
-	}
-
-	function handleKeydown(e: KeyboardEvent): void {
-		if (e.key === ' ' || e.key === 'Enter') {
-			e.preventDefault();
-		}
-		updateValue();
-	}
-
-	setContext<SwitchAPI>('switchGroupAPI', { groupID: id, updateValue, handleKeydown });
+	const role = 'switch';
+	const uuid = getID();
+	const id = switchGroupContext
+		? `${LIB_PREFIX}-${switchGroupContext.groupID}`
+		: `${LIB_PREFIX}-${role}-${uuid}`;
 </script>
 
-<slot name="start" />
 <button
-	on:click|preventDefault={updateValue}
+	on:click|preventDefault={() => (value = !value)}
 	{id}
 	role="switch"
 	class={className}
-	type="button"
-	tabindex="0"
 	aria-checked={value}
-	aria-labelledby={`${id}-label`}
+	aria-labelledby={labelID}
 >
-	<slot />
+	<slot checked={value} />
 </button>
-<slot name="end" />
