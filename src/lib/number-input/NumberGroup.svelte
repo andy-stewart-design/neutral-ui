@@ -7,9 +7,11 @@
 	import type { NumberAPI } from './types';
 
 	const dispatch = createEventDispatcher();
+	$: $activeValue && dispatch('change');
 
 	export { className as class };
-	let className: string = '';
+	let className: string | undefined = '';
+	if (className === '') className = undefined;
 
 	export let value: number;
 	export let max: number | string = 9007199254740991;
@@ -25,7 +27,7 @@
 	const role = 'spinbutton';
 	const uuid = getID();
 	const group = `${role}-${uuid}`;
-	// const id = `${LIB_PREFIX}-${group}`;
+	const id = `${LIB_PREFIX}-${role}group-${uuid}`;
 
 	const api = {
 		groupID: group,
@@ -48,7 +50,7 @@
 
 <LabelContext {group}>
 	<DescriptionContext {group} let:describedby>
-		<div aria-describedby={describedby} class={className}>
+		<div {id} aria-describedby={describedby} class={className}>
 			<slot />
 		</div>
 	</DescriptionContext>

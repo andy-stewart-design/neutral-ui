@@ -5,7 +5,8 @@
 
 	export let hidden = false;
 	export { className as class };
-	let className: string = '';
+	let className: string | undefined = '';
+	if (className === '') className = undefined;
 
 	const role = 'label';
 	const contextProvider = getContext<ContextProvider>(LABEL_CONTEXT_NAME);
@@ -22,6 +23,6 @@
 	contextProvider.register(uuid);
 </script>
 
-<label {id} for={labelFor} class={className} style={hidden ? srOnly : ''}>
+<label {id} for={labelFor} class={className} style={hidden ? srOnly : undefined}>
 	<slot />
 </label>

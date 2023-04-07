@@ -8,20 +8,17 @@
 		switchGroupContext;
 	const labelID = switchGroupContext ? `nui-${groupID}-label` : '';
 
-	export let value: number | string | null = null;
-
 	export { className as class };
-	let className = '';
+	let className: string | undefined = '';
+	if (className === '') className = undefined;
 
 	const role = 'spinbutton';
 	const id = `nui-${groupID}`;
 
-	// let isValid = true;
-
 	function handleKeyDown(e: KeyboardEvent) {
 		if (e.key === 'Enter') clampValue();
-		else if (e.key === 'Home') value = min;
-		else if (e.key === 'End') value = max;
+		else if (e.key === 'Home') $activeValue = Number(min);
+		else if (e.key === 'End') $activeValue = Number(max);
 		else if ((e.shiftKey && e.key === 'ArrowUp') || e.key === 'PageUp') {
 			e.preventDefault();
 			if ($activeValue === undefined) $activeValue = 0;
@@ -34,29 +31,37 @@
 		clampValue();
 	}
 
-	// function checkValid() {
-	// 	value === null ? (isValid = false) : (isValid = true);
-	// }
-
-	let attributes = { id, min, max, placeholder: `${placeholder}`, step, role };
+	let attributes = {
+		id,
+		type: 'number',
+		pattern: '[0-9]*',
+		min,
+		max,
+		placeholder: `${placeholder}`,
+		step,
+		'data-big-step': bigStep,
+		role
+	};
 </script>
 
-<!-- <div style:position="relative" style:display="flex">
-	<slot name="start" /> -->
 <input
-	class={`nui-input ${className}`}
-	bind:value={$activeValue}
+	class={className}
 	{...attributes}
+	bind:value={$activeValue}
 	on:keydown={handleKeyDown}
 	on:blur={clampValue}
-	type="number"
-	pattern="[0-9]*"
 	aria-labelledby={labelID}
-	aria-valuenow={Number(value)}
+	aria-valuenow={$activeValue}
 	aria-valuemin={Number(min)}
 	aria-valuemax={Number(max)}
 	autocomplete="off"
+	style="-moz-appearance: textfield;"
 />
-<!-- <slot />
-</div> -->
-<!-- aria-invalid={!isValid} -->
+
+<style scoped>
+	input::-webkit-outer-spin-button,
+	input::-webkit-inner-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	}
+</style>

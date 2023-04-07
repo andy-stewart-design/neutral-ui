@@ -83,9 +83,9 @@
 					</RadioOption>
 				{/each}
 			</div>
-			<RadioDescription class="text-sm text-black/60"
-				>Select an orientation for your squiggle</RadioDescription
-			>
+			<RadioDescription class="text-sm text-black/60">
+				Select an orientation for your squiggle
+			</RadioDescription>
 		</RadioGroup>
 	</div>
 

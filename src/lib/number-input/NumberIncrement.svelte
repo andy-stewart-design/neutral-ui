@@ -7,7 +7,8 @@
 	const { activeValue, groupID, step, bigStep, clampValue } = switchGroupContext;
 
 	export { className as class };
-	let className = '';
+	let className: string | undefined = '';
+	if (className === '') className = undefined;
 
 	function incValue(e: MouseEvent) {
 		if ($activeValue === undefined) $activeValue = 0;

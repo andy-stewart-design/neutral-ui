@@ -3,12 +3,12 @@
 	import type { NumberAPI, SpinbuttonRole } from './types';
 
 	export { className as class };
-	let className = '';
+	let className: string | undefined = '';
+	if (className === '') className = undefined;
 
-	const { parentID, register } = getContext<NumberAPI>('NumberAPI');
+	const { groupID } = getContext<NumberAPI>('NumberAPI');
 	const role: SpinbuttonRole = 'description';
-	const id = `${parentID}-${role}`;
-	register(role, id);
+	const id = `${groupID}-${role}`;
 
 	const attributes = { id };
 </script>
