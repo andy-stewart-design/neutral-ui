@@ -3,8 +3,10 @@
 	"version": "0.3.5",
 	"scripts": {
 		"dev": "vite dev",
-		"build": "svelte-kit sync && svelte-package",
-		"prepublishOnly": "echo 'Did you mean to publish `./package/`, instead of `./`?' && exit 1",
+		"build": "vite build && npm run package",
+		"preview": "vite preview",
+		"package": "svelte-kit sync && svelte-package && publint",
+		"prepublishOnly": "npm run package",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
@@ -17,8 +19,13 @@
 		}
 	},
 	"files": [
-		"dist"
+		"dist",
+		"!dist/**/*.test.*",
+		"!dist/**/*.spec.*"
 	],
+	"peerDependencies": {
+		"svelte": "^3.58.0"
+	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "next",
 		"@sveltejs/kit": "^1.15.1",
@@ -33,6 +40,8 @@
 		"postcss-load-config": "^4.0.1",
 		"prettier": "^2.8.7",
 		"prettier-plugin-svelte": "^2.10.0",
+		"publint": "^0.1.11",
+		"svelte": "^3.58.0",
 		"svelte-check": "^3.2.0",
 		"svelte-preprocess": "^5.0.3",
 		"tailwindcss": "^3.3.1",
@@ -40,8 +49,7 @@
 		"typescript": "^5.0.3",
 		"vite": "^4.2.1"
 	},
-	"dependencies": {
-		"svelte": "^3.58.0"
-	},
+	"svelte": "./dist/index.js",
+	"types": "./dist/index.d.ts",
 	"type": "module"
 }

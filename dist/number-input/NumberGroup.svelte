@@ -1,6 +1,6 @@
-<script>import { getID, LIB_PREFIX, NUMBER_GROUP_CONTEXT } from '../utils/ui';
-import { onDestroy, setContext, createEventDispatcher } from 'svelte';
+<script>import { setContext, createEventDispatcher } from 'svelte';
 import { writable } from 'svelte/store';
+import { getID, LIB_PREFIX, NUMBER_GROUP_CONTEXT } from '../utils/ui';
 import DescriptionContext from '../description/DescriptionContext.svelte';
 import LabelContext from '../label/LabelContext.svelte';
 const dispatch = createEventDispatcher();
