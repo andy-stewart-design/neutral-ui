@@ -1,11 +1,13 @@
 <script lang="ts">
 	import { setContext } from 'svelte';
 	import { writable } from 'svelte/store';
+	import DescriptionContext from '../description/DescriptionContext.svelte';
+	import LabelContext from '../label/LabelContext.svelte';
+	import { LIB_PREFIX, SLIDER_CONTEXT, getID } from '$lib/utils/ui';
 	import { map, clamp } from '$lib/utils/math';
 	import { getElementWidth } from '$lib/utils/getElementWidth';
-	import type { RangeAPI } from './types';
+	import type { SliderAPI } from './types';
 
-	let rangeContainer: HTMLElement;
 	export let value: number;
 	export let min: number;
 	export let max: number;
@@ -13,18 +15,24 @@
 	export let bigStep: number;
 	export let disabled = false;
 	export { className as class };
-	let className = '';
 
 	let isDisabled = writable(disabled);
 	$: isDisabled.set(disabled);
 	$: disabled = $isDisabled;
 
+	let className: string | undefined = '';
+	if (className === '') className = undefined;
+
+	let rangeContainer: HTMLElement;
+
+	const role = 'slider';
+	const uuid = getID();
+	const group = `${role}-${uuid}`;
+	const id = `${LIB_PREFIX}-rangeslider-${uuid}`;
+
 	const defaultValue = value;
 	let posX = writable(map(value, min, max, 0, 100));
 	let dragging = false;
-
-	const ariaID = crypto.randomUUID().split('-').pop()!;
-	const id = `nui-rangeslider-${ariaID}`;
 
 	function resetValue() {
 		if (disabled) return;
@@ -110,13 +118,9 @@
 		window.removeEventListener('mouseup', handleMouseup);
 	}
 
-	function focusThumb() {
-		const thumb: HTMLElement | null = document.querySelector(`#${id}-thumb`);
-		thumb?.focus();
-	}
-
-	setContext<RangeAPI>('rangeSliderAPI', {
-		parentID: id,
+	setContext<SliderAPI>(SLIDER_CONTEXT, {
+		groupID: group,
+		disabled: isDisabled,
 		value,
 		min,
 		max,
@@ -124,19 +128,21 @@
 		handleKeydown,
 		handleMousedown,
 		handleMousemove,
-		handleTouchstart,
-		focusThumb,
-		isDisabled
+		handleTouchstart
 	});
 </script>
 
-<div
-	bind:this={rangeContainer}
-	{id}
-	aria-disabled={disabled}
-	class={className}
-	style:position="relative"
-	tabindex="-1"
->
-	<slot {resetValue} progress={$posX} {dragging} {disabled} />
-</div>
+<LabelContext {group} let:labelledby>
+	<DescriptionContext {group} let:describedby>
+		<div
+			{id}
+			bind:this={rangeContainer}
+			role="radiogroup"
+			aria-labelledby={labelledby}
+			aria-describedby={describedby}
+			class={className}
+		>
+			<slot {resetValue} {dragging} />
+		</div>
+	</DescriptionContext>
+</LabelContext>

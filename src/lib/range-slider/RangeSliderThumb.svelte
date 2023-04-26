@@ -3,19 +3,10 @@
 	import type { RangeAPI } from './types';
 
 	export { className as class };
-	let className = '';
+	let className: string | undefined = '';
+	if (className === '') className = undefined;
 
-	const {
-		parentID,
-		value,
-		min,
-		max,
-		posX,
-		handleKeydown,
-		handleMousedown,
-		handleTouchstart,
-		disabled
-	} = getContext<RangeAPI>('rangeSliderAPI');
+	const { parentID, value, min, max, posX, isDisabled } = getContext<RangeAPI>('rangeSliderAPI');
 	const role = 'thumb';
 	const id = `${parentID}-${role}`;
 </script>
@@ -32,7 +23,7 @@
 	aria-valuemax={value}
 	aria-valuemin={min}
 	aria-valuenow={max}
-	aria-disabled={disabled}
+	aria-disabled={$isDisabled}
 	aria-labelledby={`${parentID}-label`}
 	aria-orientation="horizontal"
 />

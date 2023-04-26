@@ -24,6 +24,10 @@
 		NumberIncrement,
 		NumberDecrement
 	} from '$lib/number-input';
+	import Listbox from '$lib/listbox/Listbox.svelte';
+	import ListboxButton from '$lib/listbox/ListboxButton.svelte';
+	import ListboxOptions from '$lib/listbox/ListboxOptions.svelte';
+	import ListboxOption from '$lib/listbox/ListboxOption.svelte';
 
 	let flip = 'default';
 	let options = [
@@ -58,6 +62,24 @@
 		<h1 style:margin-bottom="1rem">
 			The orientation is <strong class="font-extrabold">{flip}</strong>
 		</h1>
+	</div>
+
+	<div class="p-8 pb-0">
+		<Listbox let:isOpen>
+			<ListboxButton>{isOpen ? 'Close' : 'Open'} Modal</ListboxButton>
+			<ListboxOptions
+				class="absolute w-32 h-48 border border-back/5 bg-white shadow-lg py-2 focus:outline-0"
+			>
+				{#each new Array(4) as _, i}
+					<ListboxOption
+						value={`Option ${i}`}
+						class="text-sm px-4 py-2 data-[selected=true]:bg-black data-[selected=true]:text-white"
+					>
+						{`Option ${i}`}
+					</ListboxOption>
+				{/each}
+			</ListboxOptions>
+		</Listbox>
 	</div>
 
 	<div class="flex flex-col gap-2 p-8">

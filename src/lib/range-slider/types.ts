@@ -13,3 +13,16 @@ export interface RangeAPI {
 	focusThumb: () => void;
 	isDisabled: Writable<boolean>;
 }
+
+export interface SliderAPI {
+	groupID: string;
+	disabled: Writable<boolean>;
+	value: number; //Is this necessary?
+	min: number;
+	max: number;
+	posX: Writable<number>;
+	handleKeydown: (e: KeyboardEvent) => void;
+	handleMousedown: (event: MouseEvent) => void;
+	handleMousemove: (event: MouseEvent) => void;
+	handleTouchstart: (event: TouchEvent) => void;
+}
