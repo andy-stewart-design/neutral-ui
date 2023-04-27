@@ -134,10 +134,9 @@ setContext('rangeSliderAPI', {
 <div
 	bind:this={rangeContainer}
 	{id}
-	{disabled}
+	aria-disabled={disabled}
 	class={className}
 	style:position="relative"
-	role="presentation"
 	tabindex="-1"
 >
 	<slot {resetValue} progress={$posX} {dragging} {disabled} />

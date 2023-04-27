@@ -143,7 +143,7 @@ setContext(SLIDER_CONTEXT, {
 			aria-describedby={describedby}
 			class={className}
 		>
-			<slot />
+			<slot {resetValue} {dragging} />
 		</div>
 	</DescriptionContext>
 </LabelContext>

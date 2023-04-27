@@ -12,7 +12,7 @@
 	export let orientation: AriaOrientation = 'vertical';
 
 	const listboxAPI = getContext<ListboxAPI>(LISTBOX_CONTEXT);
-	const { groupID, isOpen, setIsOpen, incActiveOption, decActiveOption } = listboxAPI;
+	const { groupID, multiselect, isOpen, setIsOpen, setSelected, setActive } = listboxAPI;
 
 	$: if (!listboxAPI) {
 		throw new Error('<ListboxButton /> elements must be used inside a <Listbox />.');
@@ -22,21 +22,17 @@
 	const id = `${LIB_PREFIX}-${groupID}-${role}`;
 
 	const handleKeyDown = (e: KeyboardEvent) => {
-		console.log("I'm focused!");
-
-		if (isOpen && e.key === 'Escape') {
+		if (!$isOpen) return;
+		if (e.key === 'Escape') {
 			setIsOpen();
-		} else if ((isOpen && e.key === 'ArrowUp') || (isOpen && e.key === 'ArrowLeft')) {
-			decActiveOption();
-		} else if ((isOpen && e.key === 'ArrowDown') || (isOpen && e.key === 'ArrowRight')) {
-			incActiveOption();
+		} else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+			setActive('dec');
+		} else if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+			setActive('inc');
+		} else if (e.key === 'Enter' || e.key === ' ') {
+			setSelected();
+			!multiselect && setIsOpen(false);
 		}
-		// } else if (isOpen && e.key === "Escape") {
-		//   toggleOpenState()
-		//   activeItem = categories.indexOf(selectedItem)
-		// } else if (isOpen && e.key === "Enter") {
-		//   updateSelected()
-		// }
 	};
 
 	const focusOnMount: Action<HTMLElement, CallbackFunction> = (node, callbackFunction) => {
@@ -63,11 +59,7 @@
 		};
 	};
 
-	const handleClickOutside = () => {
-		console.log('You ClickedOutside', $isOpen);
-
-		setIsOpen(false);
-	};
+	const handleClickOutside = () => setIsOpen(false);
 </script>
 
 {#if $isOpen}

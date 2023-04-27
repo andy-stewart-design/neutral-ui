@@ -7,20 +7,26 @@
 	let className: string = '';
 
 	const listboxAPI = getContext<ListboxAPI>(LISTBOX_CONTEXT);
-	const { groupID, isOpen, setIsOpen } = listboxAPI;
 
 	$: if (!listboxAPI) {
 		throw new Error('<ListboxButton /> elements must be used inside a <Listbox />.');
 	}
 
+	const { groupID, isOpen, setIsOpen } = listboxAPI;
+
 	const role = 'button';
 	const id = `${LIB_PREFIX}-${groupID}-${role}`;
+
+	const handleKeyDown = (e: KeyboardEvent) => {
+		if (e.key === 'ArrowDown' || e.key === 'ArrowUp') setIsOpen(true);
+	};
 </script>
 
 <button
 	{id}
 	class={className}
 	on:click={() => setIsOpen()}
+	on:keydown={handleKeyDown}
 	type="button"
 	aria-haspopup="true"
 	aria-expanded={$isOpen}

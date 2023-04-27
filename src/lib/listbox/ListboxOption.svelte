@@ -9,10 +9,21 @@
 	let className: string = '';
 
 	const listboxAPI = getContext<ListboxAPI>(LISTBOX_CONTEXT);
+
 	$: if (!listboxAPI) {
 		throw new Error('<ListboxButton /> elements must be used inside a <Listbox />.');
 	}
-	const { groupID, activeOption, isOpen, registerOption, unregisterOption, setIsOpen } = listboxAPI;
+
+	const {
+		groupID,
+		multiselect,
+		activeIndex,
+		selectedIndex,
+		setSelected,
+		registerOption,
+		unregisterOption,
+		setIsOpen
+	} = listboxAPI;
 
 	const role = 'option';
 	const uuid = getID();
@@ -22,6 +33,17 @@
 	if (index < 0) index = registerOption(uuid, value);
 	else registerOption(uuid, value);
 
+	$: selected =
+		multiselect && typeof $selectedIndex === 'object'
+			? $selectedIndex.includes(index)
+			: $selectedIndex === index;
+
+	const handleClick = () => {
+		$activeIndex = index;
+		setSelected();
+		!multiselect && setIsOpen(false);
+	};
+
 	onDestroy(() => unregisterOption(uuid));
 </script>
 
@@ -30,8 +52,11 @@
 	class={className}
 	role="option"
 	tabindex="-1"
+	on:click={handleClick}
+	on:keydown={() => {}}
 	aria-selected="true"
-	data-selected={$activeOption === index}
+	data-active={$activeIndex === index}
+	data-selected={selected}
 	style:cursor="pointer"
 >
 	<slot />

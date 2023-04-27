@@ -1,7 +1,9 @@
 <script>import { getContext } from 'svelte';
 export { className as class };
 let className = '';
-const { parentID, value, min, max, posX, handleKeydown, handleMousedown, handleTouchstart, disabled } = getContext('rangeSliderAPI');
+if (className === '')
+    className = undefined;
+const { parentID, value, min, max, posX, isDisabled } = getContext('rangeSliderAPI');
 const role = 'thumb';
 const id = `${parentID}-${role}`;
 </script>
@@ -18,7 +20,7 @@ const id = `${parentID}-${role}`;
 	aria-valuemax={value}
 	aria-valuemin={min}
 	aria-valuenow={max}
-	aria-disabled={disabled}
+	aria-disabled={$isDisabled}
 	aria-labelledby={`${parentID}-label`}
 	aria-orientation="horizontal"
 />

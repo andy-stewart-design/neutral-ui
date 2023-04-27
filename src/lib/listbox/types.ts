@@ -11,11 +11,13 @@ export interface Option {
 
 export interface ListboxAPI {
 	groupID: string;
-	activeOption: Writable<number>;
+	multiselect: boolean;
+	activeIndex: Writable<number>;
+	setActive: (type: 'inc' | 'dec') => void;
+	selectedIndex: Writable<number | number[]>;
 	isOpen: Writable<boolean>;
 	setIsOpen: (b?: boolean) => void;
-	incActiveOption: () => number;
-	decActiveOption: () => number;
+	setSelected: () => void;
 	registerOption: (uuid: string, val: string | number) => number;
 	unregisterOption: (uuid: string) => void;
 }

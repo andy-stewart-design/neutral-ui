@@ -24,10 +24,7 @@
 		NumberIncrement,
 		NumberDecrement
 	} from '$lib/number-input';
-	import Listbox from '$lib/listbox/Listbox.svelte';
-	import ListboxButton from '$lib/listbox/ListboxButton.svelte';
-	import ListboxOptions from '$lib/listbox/ListboxOptions.svelte';
-	import ListboxOption from '$lib/listbox/ListboxOption.svelte';
+	import { Listbox, ListboxButton, ListboxOptions, ListboxOption } from '$lib/listbox';
 
 	let flip = 'default';
 	let options = [
@@ -55,6 +52,8 @@
 		bigStep: 1,
 		name: 'test slider'
 	};
+
+	let listboxValue = 'Option 0';
 </script>
 
 <div style:margin-bottom="2rem">
@@ -65,16 +64,22 @@
 	</div>
 
 	<div class="p-8 pb-0">
-		<Listbox let:isOpen>
+		<p>The listbox value is {listboxValue}</p>
+		<Listbox bind:value={listboxValue} let:isOpen on:change={() => console.log('Changed!')}>
 			<ListboxButton>{isOpen ? 'Close' : 'Open'} Modal</ListboxButton>
 			<ListboxOptions
-				class="absolute w-32 h-48 border border-back/5 bg-white shadow-lg py-2 focus:outline-0"
+				class="absolute w-32 border border-back/5 bg-white shadow-lg py-1 focus:outline-0"
 			>
 				{#each new Array(4) as _, i}
 					<ListboxOption
 						value={`Option ${i}`}
-						class="text-sm px-4 py-2 data-[selected=true]:bg-black data-[selected=true]:text-white"
+						class="group flex gap-1 text-sm px-4 py-2 hover:bg-black/10 data-[active=true]:bg-black data-[active=true]:text-white"
 					>
+						<span class="opacity-0 group-data-[selected=true]:opacity-100">
+							<svg viewBox="0 0 16 16" width="16" height="16">
+								<path d="M2 9 L6 13 L14 5" stroke="currentColor" fill="none" stroke-width="1.5" />
+							</svg>
+						</span>
 						{`Option ${i}`}
 					</ListboxOption>
 				{/each}

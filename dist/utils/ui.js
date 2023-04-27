@@ -4,6 +4,8 @@ export const LABEL_CONTEXT_NAME = `${LIB_PREFIX}-label`;
 export const RADIO_GROUP_CONTEXT = `${LIB_PREFIX}-radiogroup`;
 export const NUMBER_GROUP_CONTEXT = `${LIB_PREFIX}-radiogroup`;
 export const SWITCH_CONTEXT = `${LIB_PREFIX}-switch`;
+export const SLIDER_CONTEXT = `${LIB_PREFIX}-slider`;
+export const LISTBOX_CONTEXT = `${LIB_PREFIX}-listbox`;
 export const getID = () => {
     if (crypto.randomUUID)
         return crypto.randomUUID().split('-')[0];
