@@ -54,6 +54,8 @@
 	tabindex="-1"
 	on:click={handleClick}
 	on:keydown={() => {}}
+	on:mouseover={() => ($activeIndex = index)}
+	on:focus={() => {}}
 	aria-selected="true"
 	data-active={$activeIndex === index}
 	data-selected={selected}
