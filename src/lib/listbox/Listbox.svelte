@@ -5,7 +5,6 @@
 	import { getID, LIB_PREFIX, LISTBOX_CONTEXT } from '$lib/utils/ui';
 	import { setContext, createEventDispatcher } from 'svelte';
 	import { writable, type Writable } from 'svelte/store';
-	import { error } from '@sveltejs/kit';
 	import type { ListboxAPI, Option, Value } from './types';
 
 	export let value: Value | Value[];
@@ -14,15 +13,13 @@
 	let className: string = '';
 
 	if (multiple && typeof value !== 'object') {
-		throw error(500, {
-			message:
-				'When using a multiselect listbox, you must pass an array of strings or numbers as the listbox value.'
-		});
+		throw new Error(
+			'When using a multiselect listbox, you must pass an array of strings or numbers as the listbox value.'
+		);
 	} else if (!multiple && typeof value === 'object') {
-		throw error(500, {
-			message:
-				'When using a single select listbox, you must pass an string or number as the listbox value.'
-		});
+		throw new Error(
+			'When using a single select listbox, you must pass an string or number as the listbox value.'
+		);
 	}
 
 	const role = 'listbox';
@@ -111,6 +108,5 @@
 </script>
 
 <div {id} class={className} style:position="relative">
-	<div>Active: {$activeIndex} Selected: {$selectedIndex}</div>
 	<slot isOpen={$isOpen} />
 </div>

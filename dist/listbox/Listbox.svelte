@@ -3,20 +3,15 @@
 import { getID, LIB_PREFIX, LISTBOX_CONTEXT } from '../utils/ui';
 import { setContext, createEventDispatcher } from 'svelte';
 import { writable } from 'svelte/store';
-import { error } from '@sveltejs/kit';
 export let value;
 export let multiple = false;
 export { className as class };
 let className = '';
 if (multiple && typeof value !== 'object') {
-    throw error(500, {
-        message: 'When using a multiselect listbox, you must pass an array of strings or numbers as the listbox value.'
-    });
+    throw new Error('When using a multiselect listbox, you must pass an array of strings or numbers as the listbox value.');
 }
 else if (!multiple && typeof value === 'object') {
-    throw error(500, {
-        message: 'When using a single select listbox, you must pass an string or number as the listbox value.'
-    });
+    throw new Error('When using a single select listbox, you must pass an string or number as the listbox value.');
 }
 const role = 'listbox';
 const uuid = getID();
@@ -100,6 +95,5 @@ setContext(LISTBOX_CONTEXT, api);
 </script>
 
 <div {id} class={className} style:position="relative">
-	<div>Active: {$activeIndex} Selected: {$selectedIndex}</div>
 	<slot isOpen={$isOpen} />
 </div>
