@@ -53,7 +53,7 @@
 		name: 'test slider'
 	};
 
-	let listboxValue = 'Option 0';
+	let listboxValue = ['Option 0'];
 </script>
 
 <div style:margin-bottom="2rem">
@@ -65,7 +65,12 @@
 
 	<div class="p-8 pb-0">
 		<p>The listbox value is {listboxValue}</p>
-		<Listbox bind:value={listboxValue} let:isOpen on:change={() => console.log('Changed!')}>
+		<Listbox
+			multiple
+			bind:value={listboxValue}
+			let:isOpen
+			on:change={() => console.log('Changed!')}
+		>
 			<ListboxButton>{isOpen ? 'Close' : 'Open'} Modal</ListboxButton>
 			<ListboxOptions
 				class="absolute w-32 border border-back/5 bg-white shadow-lg py-1 focus:outline-0"
