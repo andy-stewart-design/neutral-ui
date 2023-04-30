@@ -3,7 +3,8 @@ import type { Value } from './types';
 declare const __propDef: {
     props: {
         value: Value | Value[];
-        multiple?: boolean | undefined;
+        multi?: boolean | undefined;
+        atLeast?: string | number | undefined;
         class?: string | undefined;
     };
     events: {

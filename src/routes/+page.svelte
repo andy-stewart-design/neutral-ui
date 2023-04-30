@@ -66,7 +66,8 @@
 	<div class="p-8 pb-0">
 		<p>The listbox value is {listboxValue}</p>
 		<Listbox
-			multiple
+			multi
+			atLeast="1"
 			bind:value={listboxValue}
 			let:isOpen
 			on:change={() => console.log('Changed!')}

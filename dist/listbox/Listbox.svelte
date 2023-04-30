@@ -4,13 +4,14 @@ import { getID, LIB_PREFIX, LISTBOX_CONTEXT } from '../utils/ui';
 import { setContext, createEventDispatcher } from 'svelte';
 import { writable } from 'svelte/store';
 export let value;
-export let multiple = false;
+export let multi = false;
+export let atLeast = 0;
 export { className as class };
 let className = '';
-if (multiple && typeof value !== 'object') {
+if (multi && typeof value !== 'object') {
     throw new Error('When using a multiselect listbox, you must pass an array of strings or numbers as the listbox value.');
 }
-else if (!multiple && typeof value === 'object') {
+else if (!multi && typeof value === 'object') {
     throw new Error('When using a single select listbox, you must pass an string or number as the listbox value.');
 }
 const role = 'listbox';
@@ -19,14 +20,14 @@ const group = `${role}-${uuid}`;
 const id = `${LIB_PREFIX}-${group}`;
 const isOpen = writable(false);
 const activeIndex = writable(0);
-const selectedIndex = writable(multiple ? [] : 0);
+const selectedIndex = writable(multi ? [] : 0);
 let options = [];
 $: len = options.length - 1;
 const dispatch = createEventDispatcher();
 const registerOption = (uuid, val) => {
     options = [...options, { uuid, val }];
     const i = options.findIndex((obj) => obj.uuid === uuid);
-    if (multiple && typeof value === 'object' && typeof $selectedIndex === 'object') {
+    if (multi && typeof value === 'object' && typeof $selectedIndex === 'object') {
         if (value.includes(val) && !$selectedIndex.includes(i)) {
             $selectedIndex = [...$selectedIndex, i];
         }
@@ -43,14 +44,6 @@ const unregisterOption = (uuid) => {
     const i = options.findIndex((obj) => obj.uuid === uuid);
     options.splice(i, 1);
 };
-const setActive = (type) => {
-    if (type === 'dec') {
-        $activeIndex <= 0 ? ($activeIndex = len) : ($activeIndex -= 1);
-    }
-    else if (type === 'inc') {
-        $activeIndex >= len ? ($activeIndex = 0) : ($activeIndex += 1);
-    }
-};
 const setIsOpen = (b) => {
     if (b)
         $isOpen = b;
@@ -61,10 +54,20 @@ const setIsOpen = (b) => {
         btn.focus();
     }
 };
+const setActive = (type) => {
+    if (type === 'dec') {
+        $activeIndex <= 0 ? ($activeIndex = len) : ($activeIndex -= 1);
+    }
+    else if (type === 'inc') {
+        $activeIndex >= len ? ($activeIndex = 0) : ($activeIndex += 1);
+    }
+};
 const setSelected = () => {
-    if (multiple && typeof value === 'object' && typeof $selectedIndex === 'object') {
+    if (multi && typeof value === 'object' && typeof $selectedIndex === 'object') {
         const nextValue = options[$activeIndex].val;
         if (value.includes(nextValue)) {
+            if (value.length <= Number(atLeast))
+                return;
             value = value.filter((v) => v !== nextValue);
             $selectedIndex = $selectedIndex.filter((i) => i !== $activeIndex);
         }
@@ -81,7 +84,7 @@ const setSelected = () => {
 };
 const api = {
     groupID: group,
-    multiselect: multiple,
+    multiselect: multi,
     activeIndex,
     setActive,
     selectedIndex,

@@ -8,15 +8,16 @@
 	import type { ListboxAPI, Option, Value } from './types';
 
 	export let value: Value | Value[];
-	export let multiple = false;
+	export let multi = false;
+	export let atLeast: string | number = 0;
 	export { className as class };
 	let className: string = '';
 
-	if (multiple && typeof value !== 'object') {
+	if (multi && typeof value !== 'object') {
 		throw new Error(
 			'When using a multiselect listbox, you must pass an array of strings or numbers as the listbox value.'
 		);
-	} else if (!multiple && typeof value === 'object') {
+	} else if (!multi && typeof value === 'object') {
 		throw new Error(
 			'When using a single select listbox, you must pass an string or number as the listbox value.'
 		);
@@ -29,7 +30,7 @@
 
 	const isOpen = writable(false);
 	const activeIndex = writable(0);
-	const selectedIndex: Writable<number | number[]> = writable(multiple ? [] : 0);
+	const selectedIndex: Writable<number | number[]> = writable(multi ? [] : 0);
 	let options: Option[] = [];
 	$: len = options.length - 1;
 
@@ -38,7 +39,7 @@
 	const registerOption = (uuid: string, val: Value) => {
 		options = [...options, { uuid, val }];
 		const i = options.findIndex((obj) => obj.uuid === uuid);
-		if (multiple && typeof value === 'object' && typeof $selectedIndex === 'object') {
+		if (multi && typeof value === 'object' && typeof $selectedIndex === 'object') {
 			if (value.includes(val) && !$selectedIndex.includes(i)) {
 				$selectedIndex = [...$selectedIndex, i];
 			}
@@ -56,14 +57,6 @@
 		options.splice(i, 1);
 	};
 
-	const setActive = (type: 'inc' | 'dec') => {
-		if (type === 'dec') {
-			$activeIndex <= 0 ? ($activeIndex = len) : ($activeIndex -= 1);
-		} else if (type === 'inc') {
-			$activeIndex >= len ? ($activeIndex = 0) : ($activeIndex += 1);
-		}
-	};
-
 	const setIsOpen = (b?: boolean) => {
 		if (b) $isOpen = b;
 		else $isOpen = !$isOpen;
@@ -74,10 +67,19 @@
 		}
 	};
 
+	const setActive = (type: 'inc' | 'dec') => {
+		if (type === 'dec') {
+			$activeIndex <= 0 ? ($activeIndex = len) : ($activeIndex -= 1);
+		} else if (type === 'inc') {
+			$activeIndex >= len ? ($activeIndex = 0) : ($activeIndex += 1);
+		}
+	};
+
 	const setSelected = () => {
-		if (multiple && typeof value === 'object' && typeof $selectedIndex === 'object') {
+		if (multi && typeof value === 'object' && typeof $selectedIndex === 'object') {
 			const nextValue = options[$activeIndex].val;
 			if (value.includes(nextValue)) {
+				if (value.length <= Number(atLeast)) return;
 				value = value.filter((v) => v !== nextValue);
 				$selectedIndex = $selectedIndex.filter((i) => i !== $activeIndex);
 			} else {
@@ -93,7 +95,7 @@
 
 	const api = {
 		groupID: group,
-		multiselect: multiple,
+		multiselect: multi,
 		activeIndex,
 		setActive,
 		selectedIndex,
