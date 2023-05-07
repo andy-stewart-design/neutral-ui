@@ -11,6 +11,9 @@
 
 	export let orientation: AriaOrientation = 'vertical';
 
+	let node: HTMLUListElement;
+	let listener = false;
+
 	const listboxAPI = getContext<ListboxAPI>(LISTBOX_CONTEXT);
 	const { groupID, multiselect, isOpen, setIsOpen, setSelected, setActive } = listboxAPI;
 
@@ -35,47 +38,70 @@
 		}
 	};
 
-	const focusOnMount: Action<HTMLElement, CallbackFunction> = (node, callbackFunction) => {
-		node.focus();
-		return;
+	$: handleChange($isOpen);
+
+	const handleChange = (isOpen: boolean) => {
+		if (isOpen) {
+			setTimeout(() => {
+				node.focus();
+				window.addEventListener('click', handleClick);
+				listener = true;
+			}, 25);
+		} else if (listener) {
+			window.removeEventListener('click', handleClick);
+			listener = false;
+		}
 	};
 
-	const clickOutside: Action<HTMLElement, CallbackFunction> = (element, callbackFunction) => {
-		const handleClick = ({ target }: MouseEvent) => {
-			if (!element.contains(target as Node)) {
-				callbackFunction && callbackFunction();
-			}
-		};
-
-		setTimeout(() => window.addEventListener('click', handleClick), 0);
-
-		return {
-			update(newCallbackFunction) {
-				callbackFunction = newCallbackFunction;
-			},
-			destroy() {
-				window.removeEventListener('click', handleClick);
-			}
-		};
+	const handleClick = ({ target }: MouseEvent) => {
+		if (!node.contains(target as Node)) {
+			handleClickOutside();
+		}
 	};
 
 	const handleClickOutside = () => setIsOpen(false);
+
+	// const focusOnMount: Action<HTMLElement, CallbackFunction> = (node) => {
+	// 	node.focus();
+	// 	return;
+	// };
+
+	// const clickOutside: Action<HTMLElement, CallbackFunction> = (element, callbackFunction) => {
+	// 	const handleClick = ({ target }: MouseEvent) => {
+	// 		if (!element.contains(target as Node)) {
+	// 			callbackFunction && callbackFunction();
+	// 		}
+	// 	};
+
+	// 	setTimeout(() => window.addEventListener('click', handleClick), 0);
+
+	// 	return {
+	// 		update(newCallbackFunction) {
+	// 			callbackFunction = newCallbackFunction;
+	// 		},
+	// 		destroy() {
+	// 			window.removeEventListener('click', handleClick);
+	// 		}
+	// 	};
+	// };
 </script>
 
-{#if $isOpen}
-	<ul
-		{id}
-		class={className}
-		role="listbox"
-		on:keydown|preventDefault={handleKeyDown}
-		aria-labelledby={`${groupID}-button`}
-		aria-orientation={orientation}
-		tabindex="0"
-		data-state={$isOpen ? 'open' : 'close'}
-		style:z-index="1000"
-		use:focusOnMount
-		use:clickOutside={handleClickOutside}
-	>
-		<slot />
-	</ul>
-{/if}
+<!-- {#if $isOpen} -->
+<ul
+	{id}
+	bind:this={node}
+	class={className}
+	role="listbox"
+	on:keydown|preventDefault={handleKeyDown}
+	aria-labelledby={`${groupID}-button`}
+	aria-orientation={orientation}
+	tabindex="0"
+	data-state={$isOpen ? 'open' : 'closed'}
+	style:visibility={$isOpen ? 'visible' : 'hidden'}
+	style:z-index="1000"
+>
+	<slot />
+</ul>
+<!-- {/if} -->
+<!-- use:focusOnMount -->
+<!-- use:clickOutside={handleClickOutside} -->

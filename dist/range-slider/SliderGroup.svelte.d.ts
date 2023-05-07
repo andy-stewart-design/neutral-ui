@@ -1,11 +1,12 @@
 import { SvelteComponentTyped } from "svelte";
 declare const __propDef: {
     props: {
+        height?: string | undefined;
         value: number;
-        min: number;
-        max: number;
-        step: number;
-        bigStep: number;
+        min?: string | number | undefined;
+        max?: string | number | undefined;
+        step?: string | number | undefined;
+        bigStep?: string | number | undefined;
         disabled?: boolean | undefined;
         class?: string | undefined;
     };
@@ -13,8 +14,8 @@ declare const __propDef: {
         [evt: string]: CustomEvent<any>;
     };
     slots: {
+        label: {};
         default: {
-            resetValue: () => void;
             dragging: boolean;
         };
     };

@@ -24,6 +24,13 @@
 		NumberIncrement,
 		NumberDecrement
 	} from '$lib/number-input';
+	import {
+		SliderGroup,
+		SliderThumb,
+		SliderProgress,
+		SliderTrack,
+		SliderLabel
+	} from '$lib/range-slider';
 	import { Listbox, ListboxButton, ListboxOptions, ListboxOption } from '$lib/listbox';
 
 	let flip = 'default';
@@ -74,12 +81,12 @@
 		>
 			<ListboxButton>{isOpen ? 'Close' : 'Open'} Modal</ListboxButton>
 			<ListboxOptions
-				class="absolute w-32 border border-back/5 bg-white shadow-lg py-1 focus:outline-0"
+				class="absolute w-32 translate-y-4 border border-black/5 bg-white py-1 opacity-0 shadow-lg transition-all duration-300 focus:border focus:border-blue-500 focus:outline-0 data-[state=open]:translate-y-0 data-[state=open]:opacity-100"
 			>
 				{#each new Array(4) as _, i}
 					<ListboxOption
 						value={`Option ${i}`}
-						class="group flex gap-1 text-sm px-4 py-2 hover:bg-black/10 data-[active=true]:bg-black data-[active=true]:text-white"
+						class="group flex gap-1 px-4 py-2 text-sm hover:bg-black/10 data-[active=true]:bg-black data-[active=true]:text-white"
 					>
 						<span class="opacity-0 group-data-[selected=true]:opacity-100">
 							<svg viewBox="0 0 16 16" width="16" height="16">
@@ -97,19 +104,19 @@
 		<RadioGroup
 			bind:value={flip}
 			on:change={() => console.log('size updated')}
-			class="grid gap-3 w-full"
+			class="grid w-full gap-3"
 		>
-			<RadioLabel class="font-semibold text-sm">Squiggle Orientation</RadioLabel>
+			<RadioLabel class="text-sm font-semibold">Squiggle Orientation</RadioLabel>
 			<div class="flex w-full">
 				{#each options as option}
 					<RadioOption
 						value={option.val}
-						class="group grow focus-visible:outline-blue-500 focus-visible:outline-1"
+						class="group grow focus-visible:outline-1 focus-visible:outline-blue-500"
 					>
 						<!-- <Label>Squiggle Orientation</Label> -->
 
 						<span
-							class="inline-block font-medium text-center w-full py-2 px-3 border border-gray-900/10 border-r-0 group-last-of-type:border-r group-aria-checked:bg-blue-500 group-aria-checked:text-white"
+							class="inline-block w-full border border-r-0 border-gray-900/10 px-3 py-2 text-center font-medium group-last-of-type:border-r group-aria-checked:bg-blue-500 group-aria-checked:text-white"
 						>
 							{option.text}
 						</span>
@@ -123,7 +130,7 @@
 	</div>
 
 	<div class="flex gap-2 p-8">
-		<Button class="flex gap-2 text-white bg-black py-3 px-4" on:click={() => alert('hello')}>
+		<Button class="flex gap-2 bg-black px-4 py-3 text-white" on:click={() => alert('hello')}>
 			<svelte:fragment slot="start">+</svelte:fragment>
 			Test Button
 		</Button>
@@ -131,17 +138,17 @@
 
 	<div class="flex flex-col gap-2 p-8">
 		<div>The current count is: {count}</div>
-		<NumberGroup bind:value={count} max="30" class="grid gap-3 max-w-sm">
+		<NumberGroup bind:value={count} max="30" class="grid max-w-sm gap-3">
 			<NumberLabel hidden>Count</NumberLabel>
 			<div class="relative">
-				<NumberInput class="border border-black/10 w-full py-2 px-2.5" />
-				<div class="absolute top-0 right-0 flex h-full pr-2">
-					<NumberDecrement class="grow flex items-center py-1 px-2">
+				<NumberInput class="w-full border border-black/10 px-2.5 py-2" />
+				<div class="absolute right-0 top-0 flex h-full pr-2">
+					<NumberDecrement class="flex grow items-center px-2 py-1">
 						<svg viewBox="0 0 12 12" width="12" height="12">
 							<path d="M1 6 L11 6" stroke="currentColor" stroke-width="1.25" />
 						</svg>
 					</NumberDecrement>
-					<NumberIncrement class="grow flex items-center p-1">
+					<NumberIncrement class="flex grow items-center p-1">
 						<svg viewBox="0 0 12 12" width="12" height="12">
 							<path d="M1 6 L11 6 M6 1 L6 11" stroke="currentColor" stroke-width="1.25" />
 						</svg>
@@ -152,55 +159,64 @@
 	</div>
 
 	<div class="flex gap-4 p-8">
-		<SwitchGroup class="flex justify-between items-center gap-4">
+		<SwitchGroup class="flex items-center justify-between gap-4">
 			<SwitchLabel class="grow select-none">Active</SwitchLabel>
 			<Switch
 				bind:value={isActive}
-				class="group relative flex bg-blue-500/10 border border-blue-900/10 w-12 p-0.5 rounded-full transition-colors aria-checked:bg-blue-500 focus:outline-none after:absolute after:-top-1 after:-right-1 after:-bottom-1 after:-left-1 after:border after:border-blue-500 after:rounded-full after:opacity-0 focus-visible:after:opacity-100"
+				class="group relative flex w-12 rounded-full border border-blue-900/10 bg-blue-500/10 p-0.5 transition-colors after:absolute after:-bottom-1 after:-left-1 after:-right-1 after:-top-1 after:rounded-full after:border after:border-blue-500 after:opacity-0 focus:outline-none focus-visible:after:opacity-100 aria-checked:bg-blue-500"
 			>
 				<SwitchThumb
-					class="inline-block w-5 h-5 bg-blue-500 rounded-full transition-all group-aria-checked:translate-x-[22px] group-aria-checked:bg-white"
+					class="inline-block h-5 w-5 rounded-full bg-blue-500 transition-all group-aria-checked:translate-x-[22px] group-aria-checked:bg-white"
 				/>
 			</Switch>
 		</SwitchGroup>
 		{isActive}
 	</div>
 
-	<!-- <RangeSliderGroup class="p-8">
-		{slider.val} -->
 	<div class="p-8">
-		<RangeSlider
-			bind:value={slider.val}
-			min={slider.min}
-			max={slider.max}
-			step={slider.step}
-			bigStep={slider.bigStep}
-			class="relative flex flex-col gap-4 w-full max-w-[400px] py-2"
-			let:progress
-			let:dragging
-			let:disabled
-		>
-			<div class="flex justify-between text-sm tabular-nums">
-				<RangeSliderLabel>This is a label</RangeSliderLabel>
-				<p>{slider.val.toFixed(1)}</p>
-				<p>{dragging} {progress.toFixed(1)}</p>
-			</div>
-			<RangeSliderTrack
-				class={clsx('h-1.5 bg-gray-200 border-gray-800/5 rounded-full', disabled && 'bg-blue-500')}
+		<p>{slider.val}</p>
+		<div class="grid max-w-lg gap-4">
+			<SliderGroup
+				bind:value={slider.val}
+				min={slider.min}
+				max={slider.max}
+				step={slider.step}
+				bigStep={slider.bigStep}
 			>
-				<RangeSliderProgress
-					class="bg-gradient-to-r h-1.5 from-purple-300 to-purple-600 rounded-full"
+				<SliderLabel slot="label">Line Width</SliderLabel>
+				<SliderTrack class="h-6 overflow-hidden rounded-full bg-gray-700">
+					<SliderProgress class="h-full w-full origin-left bg-blue-600" />
+				</SliderTrack>
+				<SliderThumb
+					class="top-0 block rounded-full border-4 border-blue-600 bg-slate-50 focus-visible:bg-cyan-400 focus-visible:outline focus-visible:outline-4 focus-visible:outline-cyan-400"
 				/>
-				<RangeSliderThumb class={dragging ? 'thumb active' : 'thumb'} />
-			</RangeSliderTrack>
-		</RangeSlider>
+			</SliderGroup>
+		</div>
 	</div>
-	<!-- </RangeSliderGroup> -->
+	<div class="p-8">
+		<div class="grid max-w-lg gap-4">
+			<SliderGroup
+				bind:value={slider.val}
+				min={slider.min}
+				max={slider.max}
+				step={slider.step}
+				bigStep={slider.bigStep}
+			>
+				<SliderLabel slot="label">Line Width</SliderLabel>
+				<SliderTrack class="h-1 overflow-hidden rounded-full bg-gray-700">
+					<SliderProgress class="h-full w-full origin-left bg-blue-600" offset={0} />
+				</SliderTrack>
+				<SliderThumb
+					class="top-0 block rounded-full border-2 border-blue-600 bg-slate-50 focus-visible:bg-cyan-400 focus-visible:outline focus-visible:outline-4 focus-visible:outline-cyan-400"
+				/>
+			</SliderGroup>
+		</div>
+	</div>
 </div>
 
 <style global lang="postcss">
 	.thumb {
-		@apply bg-purple-600 w-6 h-6 border border-white rounded-full cursor-pointer;
+		@apply h-6 w-6 cursor-pointer rounded-full border border-white bg-purple-600;
 	}
 	.thumb.active {
 		@apply bg-green-500;

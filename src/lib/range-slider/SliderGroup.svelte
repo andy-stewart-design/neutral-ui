@@ -4,73 +4,93 @@
 	import DescriptionContext from '../description/DescriptionContext.svelte';
 	import LabelContext from '../label/LabelContext.svelte';
 	import { LIB_PREFIX, SLIDER_CONTEXT, getID } from '$lib/utils/ui';
-	import { map, clamp } from '$lib/utils/math';
-	import { getElementWidth } from '$lib/utils/getElementWidth';
-	import type { SliderAPI } from './types';
+	import { clamp } from '$lib/utils/math';
+	import type { RangeSliderAPI } from './types';
+
+	export let height = '24px';
 
 	export let value: number;
-	export let min: number;
-	export let max: number;
-	export let step: number;
-	export let bigStep: number;
+	export let min: string | number = 0;
+	export let max: string | number = 10;
+	export let step: string | number = 1;
+	export let bigStep: string | number = 2;
 	export let disabled = false;
 	export { className as class };
-
-	let isDisabled = writable(disabled);
-	$: isDisabled.set(disabled);
-	$: disabled = $isDisabled;
 
 	let className: string | undefined = '';
 	if (className === '') className = undefined;
 
-	let rangeContainer: HTMLElement;
+	let activeValue = writable(value);
+	let activeMin = writable(min);
+	let activeMax = writable(max);
+
+	$: activeValue.set(value);
+	$: setBounds(min, max);
 
 	const role = 'slider';
 	const uuid = getID();
 	const group = `${role}-${uuid}`;
-	const id = `${LIB_PREFIX}-rangeslider-${uuid}`;
+	const id = `${LIB_PREFIX}-${group}-group`;
 
-	const defaultValue = value;
-	let posX = writable(map(value, min, max, 0, 100));
+	setContext<RangeSliderAPI>(SLIDER_CONTEXT, {
+		groupID: group,
+		activeValue,
+		min: activeMin,
+		max: activeMax
+	});
+
+	let rangeContainer: HTMLDivElement;
+
 	let dragging = false;
 
-	function resetValue() {
-		if (disabled) return;
-		value = defaultValue;
-		posX.set(map(value, min, max, 0, 100));
+	function calculateValue(n: number) {
+		const { left, width } = getElementWidth(rangeContainer);
+		const nextValue =
+			Number(min) +
+			Math.round(((Number(max) - Number(min)) * ((n - left) / width)) / Number(step)) *
+				Number(step);
+		return clamp(nextValue, Number(min), Number(max));
+	}
+
+	function setValue(n: number) {
+		value = n;
+	}
+
+	function setBounds(min: string | number, max: string | number) {
+		activeMin.set(min);
+		activeMax.set(max);
+		if (value > Number(max)) setValue(Number(max));
+		else if (value < Number(min)) setValue(Number(min));
 	}
 
 	function handleKeydown(event: KeyboardEvent) {
+		max = Number(max);
+		min = Number(min);
+		step = Number(step);
+		bigStep = Number(bigStep);
 		if (disabled) return;
 		if (
 			(event.shiftKey && event.key === 'ArrowRight') ||
 			(event.shiftKey && event.key === 'ArrowUp') ||
 			event.key === 'PageUp'
 		) {
-			if (value <= max - bigStep) value += bigStep;
-			else if (value > max - bigStep && value < max) value = max;
+			if (value <= max - bigStep) setValue(value + bigStep);
+			else if (value > max - bigStep && value < max) setValue(max);
 		} else if (
 			(event.shiftKey && event.key === 'ArrowLeft') ||
 			(event.shiftKey && event.key === 'ArrowDown') ||
 			event.key === 'PageDown'
 		) {
-			if (value >= min + bigStep) value -= bigStep;
-			else if (value < min + bigStep && value > min) value = min;
+			if (value >= min + bigStep) setValue(value - bigStep);
+			else if (value < min + bigStep && value > min) setValue(min);
 		} else if (event.key === 'ArrowRight' || event.key === 'ArrowUp') {
-			if (value <= max - step) value += step;
-			else if (value > max - step && value < max) value = max;
+			if (value <= max - step) setValue(value + step);
+			else if (value > max - step && value < max) setValue(max);
 		} else if (event.key === 'ArrowLeft' || event.key === 'ArrowDown') {
-			if (value >= min + step) value -= step;
-			else if (value < min + step && value > min) value = min;
-		} else if (event.key === 'End' && value < max) value = max;
-		else if (event.key === 'Home' && value > min) value = min;
-		posX.set(map(value, min, max, 0, 100));
-	}
-
-	function calculateValue(n: number) {
-		const { left, width } = getElementWidth(rangeContainer);
-		const nextValue = min + Math.round(((max - min) * ((n - left) / width)) / step) * step;
-		return clamp(nextValue, min, max);
+			if (value >= min + step) setValue(value - step);
+			else if (value < min + step && value > min) setValue(min);
+		} else if (event.key === 'End' && value < max) setValue(max);
+		else if (event.key === 'Home' && value > min) setValue(min);
 	}
 
 	function handleTouchmove(event: TouchEvent) {
@@ -78,8 +98,7 @@
 		if (disabled) return;
 		dragging = true;
 		const mouseX = event.touches[0].clientX;
-		value = calculateValue(mouseX);
-		posX.set(map(value, min, max, 0, 100));
+		setValue(calculateValue(mouseX));
 	}
 
 	function handleTouchstart(event: TouchEvent) {
@@ -89,7 +108,7 @@
 		window.addEventListener('touchend', handleTouchend);
 	}
 
-	function handleTouchend(event: TouchEvent) {
+	function handleTouchend() {
 		if (disabled) return;
 		dragging = false;
 		window.removeEventListener('touchmove', handleTouchmove);
@@ -100,8 +119,7 @@
 		event.preventDefault();
 		if (disabled) return;
 		const mouseX = event.clientX;
-		value = calculateValue(mouseX);
-		posX.set(map(value, min, max, 0, 100));
+		setValue(calculateValue(mouseX));
 	}
 
 	function handleMousedown(event: MouseEvent) {
@@ -118,31 +136,30 @@
 		window.removeEventListener('mouseup', handleMouseup);
 	}
 
-	setContext<SliderAPI>(SLIDER_CONTEXT, {
-		groupID: group,
-		disabled: isDisabled,
-		value,
-		min,
-		max,
-		posX,
-		handleKeydown,
-		handleMousedown,
-		handleMousemove,
-		handleTouchstart
-	});
+	function getElementWidth(el: HTMLElement) {
+		const { left, right } = el.getBoundingClientRect();
+		const width = right - left;
+		return { left, right, width };
+	}
 </script>
 
-<LabelContext {group} let:labelledby>
-	<DescriptionContext {group} let:describedby>
+<LabelContext {group}>
+	<DescriptionContext {group}>
+		<slot name="label" />
 		<div
 			{id}
-			bind:this={rangeContainer}
-			role="radiogroup"
-			aria-labelledby={labelledby}
-			aria-describedby={describedby}
-			class={className}
+			style:position="relative"
+			style:height
+			style:cursor={'pointer'}
+			style:padding="0 12px"
+			style:background="lightgreen"
+			on:mousedown={handleMousedown}
+			on:touchstart={handleTouchstart}
+			on:keydown={handleKeydown}
 		>
-			<slot {resetValue} {dragging} />
+			<div style:position="relative" bind:this={rangeContainer}>
+				<slot {dragging} />
+			</div>
 		</div>
 	</DescriptionContext>
 </LabelContext>

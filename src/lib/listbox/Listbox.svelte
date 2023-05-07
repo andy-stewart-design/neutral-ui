@@ -109,6 +109,6 @@
 	setContext<ListboxAPI>(LISTBOX_CONTEXT, api);
 </script>
 
-<div {id} class={className} style:position="relative">
+<div {id} class={className} data-state={$isOpen ? 'open' : 'closed'} style:position="relative">
 	<slot isOpen={$isOpen} />
 </div>
