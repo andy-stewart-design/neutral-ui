@@ -7,7 +7,9 @@
 	import { clamp } from '$lib/utils/math';
 	import type { RangeSliderAPI } from './types';
 
-	export let height = '24px';
+	export let size = 24;
+	export let sizeUnit: 'px' | '%' | 'rem' | 'em' = 'px';
+	export let thumbWidth = size;
 
 	export let value: number;
 	export let min: string | number = 0;
@@ -36,7 +38,8 @@
 		groupID: group,
 		activeValue,
 		min: activeMin,
-		max: activeMax
+		max: activeMax,
+		size: { height: size, width: thumbWidth, unit: sizeUnit }
 	});
 
 	let rangeContainer: HTMLDivElement;
@@ -93,19 +96,19 @@
 		else if (event.key === 'Home' && value > min) setValue(min);
 	}
 
+	function handleTouchstart(event: TouchEvent) {
+		if (disabled) return;
+		handleTouchmove(event);
+		window.addEventListener('touchmove', handleTouchmove);
+		window.addEventListener('touchend', handleTouchend);
+	}
+
 	function handleTouchmove(event: TouchEvent) {
 		event.preventDefault();
 		if (disabled) return;
 		dragging = true;
 		const mouseX = event.touches[0].clientX;
 		setValue(calculateValue(mouseX));
-	}
-
-	function handleTouchstart(event: TouchEvent) {
-		if (disabled) return;
-		handleTouchmove(event);
-		window.addEventListener('touchmove', handleTouchmove);
-		window.addEventListener('touchend', handleTouchend);
 	}
 
 	function handleTouchend() {
@@ -115,18 +118,18 @@
 		window.removeEventListener('touchend', handleTouchend);
 	}
 
-	function handleMousemove(event: MouseEvent) {
-		event.preventDefault();
-		if (disabled) return;
-		const mouseX = event.clientX;
-		setValue(calculateValue(mouseX));
-	}
-
 	function handleMousedown(event: MouseEvent) {
 		if (disabled) return;
 		handleMousemove(event);
 		window.addEventListener('mousemove', handleMousemove);
 		window.addEventListener('mouseup', handleMouseup);
+	}
+
+	function handleMousemove(event: MouseEvent) {
+		event.preventDefault();
+		if (disabled) return;
+		const mouseX = event.clientX;
+		setValue(calculateValue(mouseX));
 	}
 
 	function handleMouseup(event: MouseEvent) {
@@ -149,13 +152,13 @@
 		<div
 			{id}
 			style:position="relative"
-			style:height
-			style:cursor={'pointer'}
-			style:padding="0 12px"
-			style:background="lightgreen"
-			on:mousedown={handleMousedown}
-			on:touchstart={handleTouchstart}
+			style:height={`${size}${sizeUnit}`}
+			style:cursor="ew-resize"
+			style:padding-left={`${thumbWidth / 2}${sizeUnit}`}
+			style:padding-right={`${thumbWidth / 2}${sizeUnit}`}
 			on:keydown={handleKeydown}
+			on:touchstart={handleTouchstart}
+			on:mousedown={handleMousedown}
 		>
 			<div style:position="relative" bind:this={rangeContainer}>
 				<slot {dragging} />

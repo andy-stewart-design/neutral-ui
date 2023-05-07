@@ -3,12 +3,10 @@
 	import { LIB_PREFIX, SLIDER_CONTEXT } from '$lib/utils/ui';
 	import type { RangeSliderAPI } from './types';
 
-	export let size = 24;
-
 	export { className as class };
 	let className: string | undefined = '';
 
-	const { groupID, activeValue, min, max } = getContext<RangeSliderAPI>(SLIDER_CONTEXT);
+	const { groupID, activeValue, min, max, size } = getContext<RangeSliderAPI>(SLIDER_CONTEXT);
 
 	$: posX = map($activeValue, Number($min), Number($max), 0, 100);
 
@@ -41,8 +39,8 @@
 	id={`${LIB_PREFIX}-${groupID}`}
 	class={className}
 	style:position="relative"
-	style:width={`${size}px`}
-	style:height={`${size}px`}
+	style:width={`${size.width}${size.unit}`}
+	style:height={`${size.height}${size.unit}`}
 	style:margin-left={`${posX}%`}
 	style:translate="-50% 0"
 	role="slider"

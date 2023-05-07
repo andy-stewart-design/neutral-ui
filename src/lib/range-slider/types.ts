@@ -32,4 +32,9 @@ export interface RangeSliderAPI {
 	activeValue: Writable<number>;
 	min: Writable<string | number>;
 	max: Writable<string | number>;
+	size: {
+		width: number;
+		height: number;
+		unit: string;
+	};
 }

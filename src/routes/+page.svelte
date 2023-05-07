@@ -182,9 +182,10 @@
 				max={slider.max}
 				step={slider.step}
 				bigStep={slider.bigStep}
+				size={32}
 			>
 				<SliderLabel slot="label">Line Width</SliderLabel>
-				<SliderTrack class="h-6 overflow-hidden rounded-full bg-gray-700">
+				<SliderTrack class="h-8 overflow-hidden rounded-full bg-gray-700">
 					<SliderProgress class="h-full w-full origin-left bg-blue-600" />
 				</SliderTrack>
 				<SliderThumb
@@ -204,7 +205,7 @@
 			>
 				<SliderLabel slot="label">Line Width</SliderLabel>
 				<SliderTrack class="h-1 overflow-hidden rounded-full bg-gray-700">
-					<SliderProgress class="h-full w-full origin-left bg-blue-600" offset={0} />
+					<SliderProgress class="h-full w-full origin-left bg-blue-600" />
 				</SliderTrack>
 				<SliderThumb
 					class="top-0 block rounded-full border-2 border-blue-600 bg-slate-50 focus-visible:bg-cyan-400 focus-visible:outline focus-visible:outline-4 focus-visible:outline-cyan-400"
