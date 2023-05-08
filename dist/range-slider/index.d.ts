@@ -4,6 +4,7 @@ export { default as RangeSliderTrack } from './RangeSliderTrack.svelte';
 export { default as RangeSliderProgress } from './RangeSliderProgress.svelte';
 export { default as RangeSliderThumb } from './RangeSliderThumb.svelte';
 export { default as SliderGroup } from './SliderGroup.svelte';
+export { default as Slider } from './Slider.svelte';
 export { default as SliderThumb } from './SliderThumb.svelte';
 export { default as SliderTrack } from './SliderTrack.svelte';
 export { default as SliderProgress } from './SliderProgress.svelte';

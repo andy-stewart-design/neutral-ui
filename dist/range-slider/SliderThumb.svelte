@@ -1,9 +1,8 @@
 <script>import { getContext } from 'svelte';
 import { LIB_PREFIX, SLIDER_CONTEXT } from '../utils/ui';
-export let size = 24;
 export { className as class };
 let className = '';
-const { groupID, activeValue, min, max } = getContext(SLIDER_CONTEXT);
+const { groupID, activeValue, min, max, size } = getContext(SLIDER_CONTEXT);
 $: posX = map($activeValue, Number($min), Number($max), 0, 100);
 function map(n, start1, end1, start2, end2) {
     return ((n - start1) / (end1 - start1)) * (end2 - start2) + start2;
@@ -34,8 +33,8 @@ function map(n, start1, end1, start2, end2) {
 	id={`${LIB_PREFIX}-${groupID}`}
 	class={className}
 	style:position="relative"
-	style:width={`${size}px`}
-	style:height={`${size}px`}
+	style:width={`${size.width}${size.unit}`}
+	style:height={`${size.height}${size.unit}`}
 	style:margin-left={`${posX}%`}
 	style:translate="-50% 0"
 	role="slider"

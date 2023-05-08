@@ -24,9 +24,16 @@ export interface SliderAPI {
     handleMousemove: (event: MouseEvent) => void;
     handleTouchstart: (event: TouchEvent) => void;
 }
-export interface RangeSliderAPI {
+export interface RangeSliderGroupAPI {
     groupID: string;
+}
+export interface RangeSliderAPI extends RangeSliderGroupAPI {
     activeValue: Writable<number>;
     min: Writable<string | number>;
     max: Writable<string | number>;
+    size: {
+        width: number;
+        height: number;
+        unit: string;
+    };
 }

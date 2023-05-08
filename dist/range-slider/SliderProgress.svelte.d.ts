@@ -1,7 +1,6 @@
 import { SvelteComponentTyped } from "svelte";
 declare const __propDef: {
     props: {
-        offset?: number | undefined;
         class?: string | undefined;
     };
     events: {

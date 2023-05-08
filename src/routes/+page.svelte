@@ -26,6 +26,7 @@
 	} from '$lib/number-input';
 	import {
 		SliderGroup,
+		Slider,
 		SliderThumb,
 		SliderProgress,
 		SliderTrack,
@@ -175,8 +176,9 @@
 
 	<div class="p-8">
 		<p>{slider.val}</p>
-		<div class="grid max-w-lg gap-4">
-			<SliderGroup
+		<SliderGroup class="grid max-w-lg gap-4">
+			<SliderLabel>Line Width</SliderLabel>
+			<Slider
 				bind:value={slider.val}
 				min={slider.min}
 				max={slider.max}
@@ -184,34 +186,34 @@
 				bigStep={slider.bigStep}
 				size={32}
 			>
-				<SliderLabel slot="label">Line Width</SliderLabel>
 				<SliderTrack class="h-8 overflow-hidden rounded-full bg-gray-700">
 					<SliderProgress class="h-full w-full origin-left bg-blue-600" />
 				</SliderTrack>
 				<SliderThumb
 					class="top-0 block rounded-full border-4 border-blue-600 bg-slate-50 focus-visible:bg-cyan-400 focus-visible:outline focus-visible:outline-4 focus-visible:outline-cyan-400"
 				/>
-			</SliderGroup>
-		</div>
+			</Slider>
+		</SliderGroup>
 	</div>
 	<div class="p-8">
-		<div class="grid max-w-lg gap-4">
-			<SliderGroup
+		<SliderGroup class="grid max-w-lg gap-4">
+			<SliderLabel>Line Width</SliderLabel>
+			<Slider
 				bind:value={slider.val}
 				min={slider.min}
 				max={slider.max}
 				step={slider.step}
 				bigStep={slider.bigStep}
+				size={32}
 			>
-				<SliderLabel slot="label">Line Width</SliderLabel>
 				<SliderTrack class="h-1 overflow-hidden rounded-full bg-gray-700">
 					<SliderProgress class="h-full w-full origin-left bg-blue-600" />
 				</SliderTrack>
 				<SliderThumb
 					class="top-0 block rounded-full border-2 border-blue-600 bg-slate-50 focus-visible:bg-cyan-400 focus-visible:outline focus-visible:outline-4 focus-visible:outline-cyan-400"
 				/>
-			</SliderGroup>
-		</div>
+			</Slider>
+		</SliderGroup>
 	</div>
 </div>
 
