@@ -21,8 +21,8 @@ if (className === '')
 let activeValue = writable(value);
 let activeMin = writable(min);
 let activeMax = writable(max);
-$: activeValue.set(value);
 $: setBounds(min, max);
+$: activeValue.set(value);
 setContext(SLIDER_CONTEXT, {
     groupID,
     activeValue,
